@@ -44,8 +44,8 @@ function Position(x, y){
   this.y = y;
 }
 
-// For every element in the grid, recursively calculate and then return the
-// longest chain of consecutive integers.
+// For every element in the grid, calculate and then return the longest chain of
+// consecutive integers.
 function calculateLongestChain(grid){
   var maxChainLength = 1;
 
