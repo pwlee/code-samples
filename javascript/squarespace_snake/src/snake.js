@@ -1,49 +1,82 @@
-import { NORTH, EAST, SOUTH, WEST } from './directions'
 import SnakeNode from './snake-node'
+import { NORTH, EAST, SOUTH, WEST } from './directions'
 
 export default class Snake {
   constructor(point) {
-    this._head = new SnakeNode(point)
-    this._velocity = 3 // pixels per tick
+    this._nodes = [new SnakeNode(point)]
+    this._velocity = 5 // pixels per tick
     this._direction = EAST
+
+
+    // temporary
+    for (let i = 1; i < 8; i++) {
+      this.nodes.push(new SnakeNode(this.head.position.x - (10 * i), 200))
+    }
   }
 
-  get head() {
-    return this._head
-  }
-
-  set head(head) {
-    this._head = head
+  get nodes() {
+    return this._nodes
   }
 
   get velocity() {
     return this._velocity
   }
 
+  get head() {
+    return this.nodes[0]
+  }
+
+  get tail() {
+    return this.nodes[this.nodes.length - 1]
+  }
+
+  get direction() {
+    return this._direction
+  }
+
+  set direction(direction) {
+    this._direction = direction
+  }
+
+  addNode() {
+    // let nextX = this.tail.position.x -
+    let nextPoint = this.nextPoint()
+    let newNode = new SnakeNode(nextPoint)
+
+    this.tail.add(newNode)
+  }
+
+  // Given a snake with nodes which are positioned like:
+  //       [2][1]->
+  //       [3]
+  // [6][5][4]
+  //
+  // We can move one 'step' forward by simply moving the
+  // last node in front like:
+  //       [2][1][6]->
+  //       [3]
+  //    [5][4]
   forward() {
-    let currentNode = this.head
     let newPosition = this.head.position
+    let newHead = this.tail
 
     switch (this._direction) {
       case NORTH:
         newPosition.y -= this.velocity
-        break;
+        break
       case EAST:
         newPosition.x += this.velocity
-        break;
+        break
       case SOUTH:
         newPosition.y += this.velocity
-        break;
+        break
       case WEST:
         newPosition.x -= this.velocity
-        break;
+        break
     }
 
-    this.head.position = newPosition
-
-    // while(currentNode) {
-    //
-    //   currentNode = currentNode.next
-    // }
+    this.tail.position = newPosition
+    this.nodes.pop()
+    this.nodes.unshift(newHead)
   }
 }

@@ -8,8 +8,8 @@ module.exports = {
   },
   module: {
     loaders: [{
-      loader: "babel-loader",
-      include: [path.resolve(__dirname, "src")],
+      loader: 'babel-loader',
+      include: [path.resolve(__dirname, 'src')],
       test: /\.jsx?$/,
       query: {
         plugins: ['transform-runtime', 'transform-class-properties'],

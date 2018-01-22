@@ -1,4 +1,4 @@
-import SnakeGame from "./snake-game"
+import SnakeGame from './snake-game'
 
 let game = new SnakeGame()
 
