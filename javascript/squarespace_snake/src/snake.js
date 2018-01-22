@@ -1,4 +1,8 @@
 import SnakeNode from './snake-node'
+
+// TODO temporary include
+import Point from './point'
+
 import { NORTH, EAST, SOUTH, WEST } from './directions'
 
 export default class Snake {
@@ -9,7 +13,9 @@ export default class Snake {
 
     // temporary
     for (let i = 1; i < 8; i++) {
-      this.nodes.push(new SnakeNode(this.head.position.x - (10 * i), 200))
+      const newPoint = new Point(this.head.position.x - (10 * i), 200)
+
+      this.nodes.push(newPoint)
     }
   }
 

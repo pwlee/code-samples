@@ -7,7 +7,7 @@ export default class SnakeGame {
     this._snake = null
     this._walls = null
     this._food  = null
-    this._loopHandle = null
+    this._intervalId = null
   }
 
   get snake() {
@@ -18,12 +18,12 @@ export default class SnakeGame {
     this._snake = snake
   }
 
-  get loopHandle() {
-    return this._loopHandle
+  get intervalId() {
+    return this._intervalId
   }
 
-  set loopHandle(loopHandle) {
-    this._loopHandle = loopHandle
+  set intervalId(intervalId) {
+    this._intervalId = intervalId
   }
 
   start() {
@@ -33,25 +33,25 @@ export default class SnakeGame {
     const center = new Point(200, 200)
 
     this.snake = new Snake(center)
-    this.loopHandle = setInterval(this.onTick.bind(this), secondsPerFrame)
+    this.intervalId = setInterval(this.onTick.bind(this), secondsPerFrame)
 
     document.onkeydown = this.onKeyDown.bind(this)
   }
 
   end() {
-    clearInterval(this.loopHandle)
+    clearInterval(this.intervalId)
   }
 
   hasCollisions() {
-
+    return false
   }
 
   onTick() {
     this.snake.forward()
 
-    // if (this.hasCollisions()) {
-    //   this.end()
-    // }
+    if (this.hasCollisions()) {
+      this.end()
+    }
   }
 
   onKeyDown(e){

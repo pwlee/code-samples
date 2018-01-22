@@ -6,7 +6,7 @@ export default class SnakeNode {
     this._position = point
     this._domElement = document.createElement('div')
 
-    // todo: move this into a css rule
+    // TODO: move this into a css rule
     // and add the appropriate class here
     this._domElement.style.width = this._width + 'px'
     this._domElement.style.height = this._height + 'px'
