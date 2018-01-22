@@ -7,7 +7,6 @@ export default class Snake {
     this._velocity = 5 // pixels per tick
     this._direction = EAST
 
-
     // temporary
     for (let i = 1; i < 8; i++) {
       this.nodes.push(new SnakeNode(this.head.position.x - (10 * i), 200))
@@ -39,9 +38,9 @@ export default class Snake {
   }
 
   addNode() {
-    // let nextX = this.tail.position.x -
-    let nextPoint = this.nextPoint()
-    let newNode = new SnakeNode(nextPoint)
+    // const nextX = this.tail.position.x -
+    const nextPoint = this.nextPoint()
+    const newNode = new SnakeNode(nextPoint)
 
     this.tail.add(newNode)
   }
@@ -57,8 +56,8 @@ export default class Snake {
   //       [3]
   //    [5][4]
   forward() {
-    let newPosition = this.head.position
-    let newHead = this.tail
+    const newPosition = this.head.position
+    const newHead = this.tail
 
     switch (this._direction) {
       case NORTH:

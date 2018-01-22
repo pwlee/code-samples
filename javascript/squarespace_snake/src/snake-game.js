@@ -4,15 +4,26 @@ import { KEYCODES } from './directions'
 
 export default class SnakeGame {
   constructor() {
-    this.loopHandle = null
-    this.snake = null
+    this._loopHandle = null
+    this._snake = null
+  }
+
+  get snake() {
+    return this._snake
+  }
+
+  set snake(snake) {
+    this._snake = snake
   }
 
   start() {
-    let center = new Point(200, 200)
+    // Sixty frames per second is approximately
+    // one frame every 16.666667 milliseconds
+    const secondsPerFrame = 16
+    const center = new Point(200, 200)
 
     this.snake = new Snake(center)
-    this.loopHandle = setInterval(this.onTick, 16) // 60 frames per second is approximately one frame every 16.666667 milliseconds
+    this.loopHandle = setInterval(this.onTick, secondsPerFrame)
 
     document.onkeydown = this.onKeyDown
   }
