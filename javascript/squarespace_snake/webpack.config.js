@@ -12,7 +12,7 @@ module.exports = {
       include: [path.resolve(__dirname, 'src')],
       test: /\.jsx?$/,
       query: {
-        plugins: ['transform-runtime', 'transform-class-properties'],
+        plugins: ['transform-runtime'],
         presets: ['es2015'],
       }
     }]
