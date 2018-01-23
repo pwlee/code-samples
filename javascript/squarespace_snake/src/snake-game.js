@@ -27,14 +27,12 @@ export default class SnakeGame {
 
   hasCollisions() {
     for (let node of this.snake.nodes) {
-      if (node === this.snake.head) {
+      if (node === this.snake.head()) {
         continue
       }
 
-      if (Collision.aabb(this.snake.head, node)) {
-        console.log(node);
-        console.log(this.snake.head);
-        this.end()
+      if (Collision.aabb(this.snake.head(), node)) {
+        return true
       }
     }
 
@@ -44,9 +42,9 @@ export default class SnakeGame {
   onTick() {
     this.snake.forward()
 
-    // if (this.hasCollisions()) {
-    //   this.end()
-    // }
+    if (this.hasCollisions()) {
+      this.end()
+    }
   }
 
   onKeyDown(e){

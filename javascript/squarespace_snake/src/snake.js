@@ -12,19 +12,19 @@ export default class Snake {
     this.direction = EAST
 
     // TODO temporary
-    for (let i = 1; i < 30; i++) {
-      const newPoint = new Point(this.head.position.x - (10 * i), 200)
+    for (let i = 1; i < 50; i++) {
+      const newPoint = new Point(this.head().position.x - (10 * i), 200)
       const newNode = new SnakeNode(newPoint)
 
       this.nodes.push(newNode)
     }
   }
 
-  get head() {
+  head() {
     return this.nodes[0]
   }
 
-  get tail() {
+  tail() {
     return this.nodes[this.nodes.length - 1]
   }
 
@@ -32,7 +32,7 @@ export default class Snake {
   //   const nextPoint = this.nextPoint()
   //   const newNode = new SnakeNode(nextPoint)
   //
-  //   this.tail.add(newNode)
+  //   this.tail().add(newNode)
   // }
 
   // Given a snake with nodes which are positioned like:
@@ -46,7 +46,7 @@ export default class Snake {
   //       [3]
   //    [5][4]
   forward() {
-    const newHead = this.tail
+    const newHead = this.tail()
 
     newHead.setPosition(this.nextPosition())
     this.nodes.pop()
@@ -54,7 +54,7 @@ export default class Snake {
   }
 
   nextPosition() {
-    const newPosition = this.head.position
+    const newPosition = Object.assign(new Point(), this.head().position)
 
     switch (this.direction) {
       case NORTH:
