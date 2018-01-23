@@ -12,11 +12,10 @@ export default class SnakeGame {
   }
 
   start() {
-    const millisecondsPerFrame = 16 // Approximately 60 frames per second
     const center = new Point(200, 200)
 
     this.snake = new Snake(center)
-    this.intervalId = setInterval(this.onTick.bind(this), millisecondsPerFrame)
+    this.intervalId = setInterval(this.onTick.bind(this), 20)
 
     document.onkeydown = this.onKeyDown.bind(this)
   }
@@ -25,13 +24,12 @@ export default class SnakeGame {
     clearInterval(this.intervalId)
   }
 
-  hasCollisions() {
-    for (let node of this.snake.nodes) {
-      if (node === this.snake.head()) {
-        continue
-      }
+  checkForCollision() {
+    for (let i = 1; i < this.snake.nodes.length; i++) {
+      const currentNode = this.snake.nodes[i]
+      const hasCollision = Collision.aabb(this.snake.head(), currentNode)
 
-      if (Collision.aabb(this.snake.head(), node)) {
+      if (hasCollision) {
         return true
       }
     }
@@ -41,22 +39,19 @@ export default class SnakeGame {
 
   onTick() {
     this.snake.forward()
-
-    if (this.hasCollisions()) {
-      this.end()
-    }
+    this.checkForCollision()
   }
 
   onKeyDown(e){
-    const newDirection = KEYCODES[e.keyCode]
-    const isSameDirection = (newDirection === OPPOSITE_DIRECTIONS[this.snake.direction])
+    const direction = KEYCODES[e.keyCode]
+    const isSameDirection = (direction === OPPOSITE_DIRECTIONS[this.snake.direction])
 
     if (isSameDirection) {
       return
     }
 
-    if (newDirection) {
-      this.snake.direction = newDirection
+    if (direction) {
+      this.snake.direction = direction
     }
   }
 }

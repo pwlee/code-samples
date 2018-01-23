@@ -12,8 +12,8 @@ export default class Snake {
     this.direction = EAST
 
     // TODO temporary
-    for (let i = 1; i < 50; i++) {
-      const newPoint = new Point(this.head().position.x - (10 * i), 200)
+    for (let i = 1; i < 5; i++) {
+      const newPoint = new Point(this.head().position.x - (4 * i), 200)
       const newNode = new SnakeNode(newPoint)
 
       this.nodes.push(newNode)
@@ -28,13 +28,6 @@ export default class Snake {
     return this.nodes[this.nodes.length - 1]
   }
 
-  // addNode() {
-  //   const nextPoint = this.nextPoint()
-  //   const newNode = new SnakeNode(nextPoint)
-  //
-  //   this.tail().add(newNode)
-  // }
-
   // Given a snake with nodes which are positioned like:
   //       [2][1]->
   //       [3]
@@ -46,12 +39,20 @@ export default class Snake {
   //       [3]
   //    [5][4]
   forward() {
+    // TODO: I feel like we can get rid of a line here
     const newHead = this.tail()
 
     newHead.setPosition(this.nextPosition())
     this.nodes.pop()
     this.nodes.unshift(newHead)
   }
+
+  // addNode() {
+  //   const nextPoint = this.nextPoint()
+  //   const newNode = new SnakeNode(nextPoint)
+  //
+  //   this.tail().add(newNode)
+  // }
 
   nextPosition() {
     const newPosition = Object.assign(new Point(), this.head().position)
