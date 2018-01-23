@@ -24,13 +24,19 @@ export default class SnakeGame {
     clearInterval(this.intervalId)
   }
 
+  eatFood() {
+    // delete old food
+    // grow
+    // spawn new food
+  }
+
   checkForCollision() {
     for (let i = 1; i < this.snake.nodes.length; i++) {
       const currentNode = this.snake.nodes[i]
       const hasCollision = Collision.aabb(this.snake.head(), currentNode)
 
       if (hasCollision) {
-        return true
+        this.end()
       }
     }
 
@@ -44,9 +50,9 @@ export default class SnakeGame {
 
   onKeyDown(e){
     const direction = KEYCODES[e.keyCode]
-    const isSameDirection = (direction === OPPOSITE_DIRECTIONS[this.snake.direction])
+    const isBackwards = (direction === OPPOSITE_DIRECTIONS[this.snake.direction])
 
-    if (isSameDirection) {
+    if (isBackwards) {
       return
     }
 

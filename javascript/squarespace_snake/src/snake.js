@@ -7,16 +7,13 @@ import { NORTH, EAST, SOUTH, WEST } from './directions'
 
 export default class Snake {
   constructor(point) {
-    this.nodes = [new SnakeNode(point)]
+    this.nodes = [new SnakeNode(point, 4, 4)]
     this.velocity = 4 // pixels per tick
     this.direction = EAST
 
     // TODO temporary
     for (let i = 1; i < 5; i++) {
-      const newPoint = new Point(this.head().position.x - (4 * i), 200)
-      const newNode = new SnakeNode(newPoint)
-
-      this.nodes.push(newNode)
+      this.grow()
     }
   }
 
@@ -39,20 +36,17 @@ export default class Snake {
   //       [3]
   //    [5][4]
   forward() {
-    // TODO: I feel like we can get rid of a line here
-    const newHead = this.tail()
-
+    const newHead = this.nodes.pop()
     newHead.setPosition(this.nextPosition())
-    this.nodes.pop()
     this.nodes.unshift(newHead)
   }
 
-  // addNode() {
-  //   const nextPoint = this.nextPoint()
-  //   const newNode = new SnakeNode(nextPoint)
-  //
-  //   this.tail().add(newNode)
-  // }
+  grow() {
+    const nextPoint = this.nextPosition()
+    const newNode = new SnakeNode(nextPoint, 4, 4)
+
+    this.nodes.unshift(newNode)
+  }
 
   nextPosition() {
     const newPosition = Object.assign(new Point(), this.head().position)
