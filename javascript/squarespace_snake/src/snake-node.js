@@ -1,38 +1,23 @@
 export default class SnakeNode {
   constructor(point) {
-    this._next = null
-    this._width = 10
-    this._height = 10
-    this._position = point
-    this._domElement = document.createElement('div')
+    this.domElement = document.createElement('div')
+    this.width = 4
+    this.height = 4
+    this.setPosition(point)
+
+    document.body.appendChild(this.domElement)
 
     // TODO: move this into a css rule
     // and add the appropriate class here
-    this._domElement.style.width = this._width + 'px'
-    this._domElement.style.height = this._height + 'px'
-    this._domElement.style.position = 'absolute'
-    this._domElement.style.top = this._position.y + 'px'
-    this._domElement.style.left = this._position.x + 'px'
-    this._domElement.style.backgroundColor = 'red'
-
-    document.body.appendChild(this._domElement)
+    this.domElement.style.width = this.width + 'px'
+    this.domElement.style.height = this.height + 'px'
+    this.domElement.style.position = 'absolute'
+    this.domElement.style.backgroundColor = 'red'
   }
 
-  get next() {
-    return this._next
-  }
-
-  set next(next) {
-    this._next = next
-  }
-
-  get position() {
-    return this._position
-  }
-
-  set position(point) {
-    this._position = point
-    this._domElement.style.top = this._position.y + 'px'
-    this._domElement.style.left = this._position.x + 'px'
+  setPosition(point) {
+    this.position = point
+    this.domElement.style.top = this.position.y + 'px'
+    this.domElement.style.left = this.position.x + 'px'
   }
 }

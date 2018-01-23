@@ -1,39 +1,22 @@
 import Snake from './snake'
-import Point from './point'
-import { KEYCODES } from './directions'
+import Point from './utilities/point'
+import Collision from './utilities/collisions'
+import { KEYCODES, OPPOSITE_DIRECTIONS } from './directions'
 
 export default class SnakeGame {
   constructor() {
-    this._snake = null
-    this._walls = null
-    this._food  = null
-    this._intervalId = null
-  }
-
-  get snake() {
-    return this._snake
-  }
-
-  set snake(snake) {
-    this._snake = snake
-  }
-
-  get intervalId() {
-    return this._intervalId
-  }
-
-  set intervalId(intervalId) {
-    this._intervalId = intervalId
+    this.snake = null
+    this.walls = null
+    this.food  = null
+    this.intervalId = null
   }
 
   start() {
-    // Sixty frames per second is approximately
-    // one frame every 16.66666667 milliseconds
-    const secondsPerFrame = 16
+    const millisecondsPerFrame = 16 // Approximately 60 frames per second
     const center = new Point(200, 200)
 
     this.snake = new Snake(center)
-    this.intervalId = setInterval(this.onTick.bind(this), secondsPerFrame)
+    this.intervalId = setInterval(this.onTick.bind(this), millisecondsPerFrame)
 
     document.onkeydown = this.onKeyDown.bind(this)
   }
@@ -43,19 +26,36 @@ export default class SnakeGame {
   }
 
   hasCollisions() {
+    for (let node of this.snake.nodes) {
+      if (node === this.snake.head) {
+        continue
+      }
+
+      if (Collision.aabb(this.snake.head, node)) {
+        console.log(node);
+        console.log(this.snake.head);
+        this.end()
+      }
+    }
+
     return false
   }
 
   onTick() {
     this.snake.forward()
 
-    if (this.hasCollisions()) {
-      this.end()
-    }
+    // if (this.hasCollisions()) {
+    //   this.end()
+    // }
   }
 
   onKeyDown(e){
-    let newDirection = KEYCODES[e.keyCode]
+    const newDirection = KEYCODES[e.keyCode]
+    const isSameDirection = (newDirection === OPPOSITE_DIRECTIONS[this.snake.direction])
+
+    if (isSameDirection) {
+      return
+    }
 
     if (newDirection) {
       this.snake.direction = newDirection

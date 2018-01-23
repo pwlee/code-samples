@@ -1,30 +1,23 @@
 import SnakeNode from './snake-node'
 
 // TODO temporary include
-import Point from './point'
+import Point from './utilities/point'
 
 import { NORTH, EAST, SOUTH, WEST } from './directions'
 
 export default class Snake {
   constructor(point) {
-    this._nodes = [new SnakeNode(point)]
-    this._velocity = 5 // pixels per tick
-    this._direction = EAST
+    this.nodes = [new SnakeNode(point)]
+    this.velocity = 4 // pixels per tick
+    this.direction = EAST
 
-    // temporary
-    for (let i = 1; i < 8; i++) {
+    // TODO temporary
+    for (let i = 1; i < 30; i++) {
       const newPoint = new Point(this.head.position.x - (10 * i), 200)
+      const newNode = new SnakeNode(newPoint)
 
-      this.nodes.push(newPoint)
+      this.nodes.push(newNode)
     }
-  }
-
-  get nodes() {
-    return this._nodes
-  }
-
-  get velocity() {
-    return this._velocity
   }
 
   get head() {
@@ -35,21 +28,12 @@ export default class Snake {
     return this.nodes[this.nodes.length - 1]
   }
 
-  get direction() {
-    return this._direction
-  }
-
-  set direction(direction) {
-    this._direction = direction
-  }
-
-  addNode() {
-    // const nextX = this.tail.position.x -
-    const nextPoint = this.nextPoint()
-    const newNode = new SnakeNode(nextPoint)
-
-    this.tail.add(newNode)
-  }
+  // addNode() {
+  //   const nextPoint = this.nextPoint()
+  //   const newNode = new SnakeNode(nextPoint)
+  //
+  //   this.tail.add(newNode)
+  // }
 
   // Given a snake with nodes which are positioned like:
   //       [2][1]->
@@ -62,10 +46,17 @@ export default class Snake {
   //       [3]
   //    [5][4]
   forward() {
-    const newPosition = this.head.position
     const newHead = this.tail
 
-    switch (this._direction) {
+    newHead.setPosition(this.nextPosition())
+    this.nodes.pop()
+    this.nodes.unshift(newHead)
+  }
+
+  nextPosition() {
+    const newPosition = this.head.position
+
+    switch (this.direction) {
       case NORTH:
         newPosition.y -= this.velocity
         break
@@ -80,8 +71,6 @@ export default class Snake {
         break
     }
 
-    this.tail.position = newPosition
-    this.nodes.pop()
-    this.nodes.unshift(newHead)
+    return newPosition
   }
 }

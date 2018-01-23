@@ -9,3 +9,9 @@ export const KEYCODES = {
   39: EAST,  // right
   40: SOUTH  // down
 }
+
+export const OPPOSITE_DIRECTIONS = {}
+             OPPOSITE_DIRECTIONS[NORTH] = SOUTH
+             OPPOSITE_DIRECTIONS[EAST]  = WEST
+             OPPOSITE_DIRECTIONS[SOUTH] = NORTH
+             OPPOSITE_DIRECTIONS[WEST]  = EAST

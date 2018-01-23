@@ -1,5 +1,5 @@
 import SnakeGame from './snake-game'
 
-let game = new SnakeGame()
+const game = new SnakeGame()
 
 game.start()
