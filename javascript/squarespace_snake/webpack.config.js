@@ -3,6 +3,8 @@ var path = require('path');
 // Auto generate index.html on build and place it in ./dist/
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 module.exports = {
   entry: './src/js/main.js',
   output: {
@@ -18,10 +20,22 @@ module.exports = {
         plugins: ['transform-runtime'],
         presets: ['es2015'],
       }
+    },
+    {
+      test: /\.scss$/,
+      loader: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: ['css-loader', 'sass-loader']
+      })
     }]
   },
-  plugins: [new HtmlWebpackPlugin({
-    hash: true,
-    template: './src/index.html'
-  })]
-};
+  plugins: [
+    new HtmlWebpackPlugin({
+      hash: true,
+      template: './src/index.html'
+    }),
+    new ExtractTextPlugin({
+      filename: 'bundle.css'
+    })
+  ]
+}

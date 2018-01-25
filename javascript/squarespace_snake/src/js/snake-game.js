@@ -11,22 +11,46 @@ export default class SnakeGame {
     this.walls = null
     this.food = null
     this.intervalId = null
+    this.introElement = document.getElementById('intro')
+    this.gameOverElement = document.getElementById('game-over')
+
+    document.onkeydown = this.onKeyDown.bind(this)
+  }
+
+  showModal(element) {
+    element.classList.remove('hide')
+  }
+
+  hideModals(element) {
+    this.introElement.classList.add('hide')
+    this.gameOverElement.classList.add('hide')
   }
 
   start() {
-    const center = new Point(200, 200)
+    this.cleanup()
+    this.hideModals()
 
-    this.snake = new Snake(center)
+    this.snake = new Snake(new Point(200, 200))
     this.walls = this.spawnWalls()
     this.food = this.spawnFood()
 
     this.intervalId = setInterval(this.onTick.bind(this), 20)
-    document.onkeydown = this.onKeyDown.bind(this)
     window.onresize = this.onResize.bind(this)
   }
 
   end() {
+    this.showModal(this.gameOverElement)
     clearInterval(this.intervalId)
+  }
+
+  cleanup() {
+    if (!this.snake) {
+      return
+    }
+
+    this.snake.nodes.concat(this.walls).concat(this.food).forEach((gameObject) => {
+      gameObject.destroy()
+    })
   }
 
   spawnWalls() {
@@ -50,6 +74,7 @@ export default class SnakeGame {
   }
 
   checkForCollision() {
+    // TODO: make this shorter
     // const collidables = this.snake.body().concat(this.walls)
     // const hasCollision = collidables.some((collidable) => {
     //   return Collision.aabb(this.snake.head(), collidable)
@@ -88,6 +113,14 @@ export default class SnakeGame {
   }
 
   onKeyDown(e) {
+    if (e.keyCode == 32) {
+      return this.start()
+    }
+
+    if (this.snake == null) {
+      return
+    }
+
     const newDirection = KEYCODES[e.keyCode]
     const oppositeDirection = OPPOSITE_DIRECTIONS[this.snake.direction]
 

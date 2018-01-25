@@ -3,8 +3,16 @@
   <head>
     <meta charset="UTF-8">
     <title>Snake!</title>
-    <link href="<%= htmlWebpackPlugin.files.css %>" rel="stylesheet">
   </head>
   <body>
+    <div class="modal" id="intro">
+      <h1>Snake! :)</h1>
+      <small>(Arrow keys to move)</small>
+      <small>Press space to start</small>
+    </div>
+    <div class="modal hide" id="game-over">
+      <h1>Game over :(</h1>
+      <small>Press space to continue</small>
+    </div>
   </body>
 </html>

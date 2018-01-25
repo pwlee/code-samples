@@ -1,6 +1,7 @@
 {
   "name": "Snake",
-  "version": "1.0.0",
+  "version": "0.1.0",
+  "description": "ES6 implementation of Snake.",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
