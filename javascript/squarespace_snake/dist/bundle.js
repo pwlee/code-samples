@@ -2303,9 +2303,9 @@ var Wall = function (_GameObject) {
     var wallThickness = 10;
     var options = {
       backgroundColor: "red"
-    };
 
-    switch (direction) {
+      // TODO: Can we make this smaller?
+    };switch (direction) {
       case _directions.NORTH:
         options.position = new _point2.default(0, 0);
         options.width = window.innerWidth;

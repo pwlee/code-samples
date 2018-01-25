@@ -9,6 +9,7 @@ export default class Wall extends GameObject {
       backgroundColor: "red"
     }
 
+    // TODO: Can we make this smaller?
     switch (direction) {
       case NORTH:
         options.position = new Point(0, 0)
