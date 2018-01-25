@@ -1,7 +1,10 @@
 var path = require('path');
 
+// Auto generate index.html on build and place it in ./dist/
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = {
-  entry: './src/main.js',
+  entry: './src/js/main.js',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
@@ -16,5 +19,6 @@ module.exports = {
         presets: ['es2015'],
       }
     }]
-  }
+  },
+  plugins: [new HtmlWebpackPlugin()]
 };
