@@ -1,8 +1,8 @@
 export default class GameObject {
-  constructor(point, width, height) {
+  constructor(point, width, height, options = {}) {
     this.width = width
     this.height = height
-    this.backgroundColor = "black"
+    this.backgroundColor = options.backgroundColor || "#000"
     this.id = Math.random() * 10000000
     this.domElement = this.createDomElement()
     this.setPosition(point)

@@ -17,6 +17,10 @@ export default class Snake {
     return this.nodes[0]
   }
 
+  body() {
+    return this.nodes.slice(1, this.nodes.length)
+  }
+
   tail() {
     return this.nodes[this.nodes.length - 1]
   }
@@ -48,6 +52,7 @@ export default class Snake {
   nextPosition() {
     const newPosition = Object.assign(new Point(), this.head().position)
 
+    // TODO: Cane we make this smaller?
     switch (this.direction) {
       case NORTH:
         newPosition.y -= this.velocity

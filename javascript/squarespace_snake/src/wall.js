@@ -9,6 +9,7 @@ export default class Wall extends GameObject {
       backgroundColor: "red"
     }
 
+    // TODO: Make this smaller
     let point = null
     let width = null
     let height = null

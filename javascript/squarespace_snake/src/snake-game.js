@@ -9,7 +9,7 @@ export default class SnakeGame {
   constructor() {
     this.snake = null
     this.walls = null
-    this.food  = null
+    this.food = null
     this.intervalId = null
   }
 
@@ -17,8 +17,8 @@ export default class SnakeGame {
     const center = new Point(200, 200)
 
     this.snake = new Snake(center)
-    this.food = this.spawnFood()
     this.walls = this.spawnWalls()
+    this.food = this.spawnFood()
 
     this.intervalId = setInterval(this.onTick.bind(this), 20)
     document.onkeydown = this.onKeyDown.bind(this)
@@ -40,7 +40,7 @@ export default class SnakeGame {
     const randY = Math.random() * window.innerHeight
     const randomPoint = new Point(randX, randY)
 
-    return new Food(randomPoint, 10, 10)
+    return new Food(randomPoint)
   }
 
   eatFood() {
@@ -50,24 +50,31 @@ export default class SnakeGame {
   }
 
   checkForCollision() {
-    // const collidables =
-    for (let i = 1; i < this.snake.nodes.length; i++) {
-      const currentNode = this.snake.nodes[i]
-      const hasCollision = Collision.aabb(this.snake.head(), currentNode)
+    const collidables = this.snake.body().concat(this.walls)
+    const hasCollision = collidables.some((collidable) => {
+      return Collision.aabb(this.snake.head(), collidable)
+    })
 
-      if (hasCollision) {
-        this.end()
-      }
+    if (hasCollision) {
+      this.end()
     }
-
-    for (let i = 0; i < this.walls.length; i++) {
-      const currentWall = this.walls[i]
-      const hasCollision = Collision.aabb(this.snake.head(), currentWall)
-
-      if (hasCollision) {
-        this.end()
-      }
-    }
+    // for (let i = 1; i < this.snake.nodes.length; i++) {
+    //   const currentNode = this.snake.nodes[i]
+    //   const hasCollision = Collision.aabb(this.snake.head(), currentNode)
+    //
+    //   if (hasCollision) {
+    //     this.end()
+    //   }
+    // }
+    //
+    // for (let i = 0; i < this.walls.length; i++) {
+    //   const currentWall = this.walls[i]
+    //   const hasCollision = Collision.aabb(this.snake.head(), currentWall)
+    //
+    //   if (hasCollision) {
+    //     this.end()
+    //   }
+    // }
 
     const ateFood = Collision.aabb(this.snake.head(), this.food)
     if (ateFood) {
