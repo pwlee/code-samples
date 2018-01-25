@@ -1,7 +1,9 @@
 import Snake from './snake'
+import Wall from './wall'
+import Food from './food'
 import Point from './utilities/point'
 import Collision from './utilities/collisions'
-import { KEYCODES, OPPOSITE_DIRECTIONS } from './directions'
+import { NORTH, EAST, SOUTH, WEST, KEYCODES, OPPOSITE_DIRECTIONS } from './utilities/directions'
 
 export default class SnakeGame {
   constructor() {
@@ -15,22 +17,40 @@ export default class SnakeGame {
     const center = new Point(200, 200)
 
     this.snake = new Snake(center)
-    this.intervalId = setInterval(this.onTick.bind(this), 20)
+    this.food = this.spawnFood()
+    this.walls = this.spawnWalls()
 
+    this.intervalId = setInterval(this.onTick.bind(this), 20)
     document.onkeydown = this.onKeyDown.bind(this)
+    window.onresize = this.onResize.bind(this)
   }
 
   end() {
     clearInterval(this.intervalId)
   }
 
+  spawnWalls() {
+    return [NORTH, EAST, SOUTH, WEST].map((direction) => {
+      return new Wall(direction)
+    })
+  }
+
+  spawnFood() {
+    const randX = Math.random() * window.innerWidth
+    const randY = Math.random() * window.innerHeight
+    const randomPoint = new Point(randX, randY)
+
+    return new Food(randomPoint, 10, 10)
+  }
+
   eatFood() {
-    // delete old food
-    // grow
-    // spawn new food
+    this.food.destroy()
+    this.food = this.spawnFood()
+    this.snake.grow()
   }
 
   checkForCollision() {
+    // const collidables =
     for (let i = 1; i < this.snake.nodes.length; i++) {
       const currentNode = this.snake.nodes[i]
       const hasCollision = Collision.aabb(this.snake.head(), currentNode)
@@ -40,7 +60,19 @@ export default class SnakeGame {
       }
     }
 
-    return false
+    for (let i = 0; i < this.walls.length; i++) {
+      const currentWall = this.walls[i]
+      const hasCollision = Collision.aabb(this.snake.head(), currentWall)
+
+      if (hasCollision) {
+        this.end()
+      }
+    }
+
+    const ateFood = Collision.aabb(this.snake.head(), this.food)
+    if (ateFood) {
+      this.eatFood()
+    }
   }
 
   onTick() {
@@ -48,16 +80,24 @@ export default class SnakeGame {
     this.checkForCollision()
   }
 
-  onKeyDown(e){
-    const direction = KEYCODES[e.keyCode]
-    const isBackwards = (direction === OPPOSITE_DIRECTIONS[this.snake.direction])
+  onKeyDown(e) {
+    const newDirection = KEYCODES[e.keyCode]
+    const oppositeDirection = OPPOSITE_DIRECTIONS[this.snake.direction]
 
-    if (isBackwards) {
+    if (newDirection === oppositeDirection) {
       return
     }
 
-    if (direction) {
-      this.snake.direction = direction
+    if (newDirection) {
+      this.snake.direction = newDirection
     }
+  }
+
+  onResize() {
+    this.walls.forEach((wall) => {
+      wall.destroy()
+    })
+
+    this.walls = this.spawnWalls()
   }
 }

@@ -1,9 +1,6 @@
 import SnakeNode from './snake-node'
-
-// TODO temporary include
 import Point from './utilities/point'
-
-import { NORTH, EAST, SOUTH, WEST } from './directions'
+import { NORTH, EAST, SOUTH, WEST } from './utilities/directions'
 
 export default class Snake {
   constructor(point) {
@@ -11,7 +8,6 @@ export default class Snake {
     this.velocity = 4 // pixels per tick
     this.direction = EAST
 
-    // TODO temporary
     for (let i = 1; i < 5; i++) {
       this.grow()
     }
@@ -25,17 +21,17 @@ export default class Snake {
     return this.nodes[this.nodes.length - 1]
   }
 
-  // Given a snake with nodes which are positioned like:
-  //       [2][1]->
-  //       [3]
-  // [6][5][4]
-  //
-  // We can move one 'step' forward by simply moving the
-  // last node in front like:
-  //       [2][1][6]->
-  //       [3]
-  //    [5][4]
   forward() {
+    // Given a snake with nodes which are positioned like:
+    //       [2][1]->
+    //       [3]
+    // [6][5][4]
+    //
+    // We can move one 'step' forward by simply moving the
+    // last node to the front. Example:
+    //       [2][1][6]->
+    //       [3]
+    //    [5][4]
     const newHead = this.nodes.pop()
     newHead.setPosition(this.nextPosition())
     this.nodes.unshift(newHead)
@@ -48,6 +44,7 @@ export default class Snake {
     this.nodes.unshift(newNode)
   }
 
+  // Based on the snake's velocity, determine where the head will go next
   nextPosition() {
     const newPosition = Object.assign(new Point(), this.head().position)
 

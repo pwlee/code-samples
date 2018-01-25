@@ -2,6 +2,7 @@ export default class GameObject {
   constructor(point, width, height) {
     this.width = width
     this.height = height
+    this.backgroundColor = "black"
     this.id = Math.random() * 10000000
     this.domElement = this.createDomElement()
     this.setPosition(point)
@@ -19,10 +20,14 @@ export default class GameObject {
     domElement.style.width = this.width + 'px'
     domElement.style.height = this.height + 'px'
     domElement.style.position = 'absolute'
-    domElement.style.backgroundColor = 'black'
+    domElement.style.backgroundColor = this.backgroundColor
 
     document.body.appendChild(domElement)
 
     return domElement
+  }
+
+  destroy() {
+    this.domElement.parentNode.removeChild(this.domElement)
   }
 }
