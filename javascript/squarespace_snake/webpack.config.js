@@ -20,5 +20,8 @@ module.exports = {
       }
     }]
   },
-  plugins: [new HtmlWebpackPlugin()]
+  plugins: [new HtmlWebpackPlugin({
+    hash: true,
+    template: './src/index.html'
+  })]
 };

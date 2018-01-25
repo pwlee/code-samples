@@ -636,19 +636,23 @@ var _createClass2 = __webpack_require__(13);
 
 var _createClass3 = _interopRequireDefault(_createClass2);
 
+var _point = __webpack_require__(36);
+
+var _point2 = _interopRequireDefault(_point);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var GameObject = function () {
-  function GameObject(point, width, height) {
-    var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+  function GameObject() {
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     (0, _classCallCheck3.default)(this, GameObject);
 
-    this.width = width;
-    this.height = height;
+    this.position = options.position || new _point2.default(0, 0);
+    this.width = options.width || 10;
+    this.height = options.height || 10;
     this.backgroundColor = options.backgroundColor || "#000";
-    this.id = Math.random() * 10000000;
     this.domElement = this.createDomElement();
-    this.setPosition(point);
+    this.setPosition(this.position);
   }
 
   (0, _createClass3.default)(GameObject, [{
@@ -1098,7 +1102,7 @@ var SnakeGame = function () {
       var randY = Math.random() * window.innerHeight;
       var randomPoint = new _point2.default(randX, randY);
 
-      return new _food2.default(randomPoint);
+      return new _food2.default({ position: randomPoint });
     }
   }, {
     key: 'eatFood',
@@ -1110,33 +1114,31 @@ var SnakeGame = function () {
   }, {
     key: 'checkForCollision',
     value: function checkForCollision() {
-      var _this = this;
+      // const collidables = this.snake.body().concat(this.walls)
+      // const hasCollision = collidables.some((collidable) => {
+      //   return Collision.aabb(this.snake.head(), collidable)
+      // })
+      //
+      // if (hasCollision) {
+      //   this.end()
+      // }
+      for (var i = 1; i < this.snake.nodes.length; i++) {
+        var currentNode = this.snake.nodes[i];
+        var hasCollision = _collisions2.default.aabb(this.snake.head(), currentNode);
 
-      var collidables = this.snake.body().concat(this.walls);
-      var hasCollision = collidables.some(function (collidable) {
-        return _collisions2.default.aabb(_this.snake.head(), collidable);
-      });
-
-      if (hasCollision) {
-        this.end();
+        if (hasCollision) {
+          this.end();
+        }
       }
-      // for (let i = 1; i < this.snake.nodes.length; i++) {
-      //   const currentNode = this.snake.nodes[i]
-      //   const hasCollision = Collision.aabb(this.snake.head(), currentNode)
-      //
-      //   if (hasCollision) {
-      //     this.end()
-      //   }
-      // }
-      //
-      // for (let i = 0; i < this.walls.length; i++) {
-      //   const currentWall = this.walls[i]
-      //   const hasCollision = Collision.aabb(this.snake.head(), currentWall)
-      //
-      //   if (hasCollision) {
-      //     this.end()
-      //   }
-      // }
+
+      for (var _i = 0; _i < this.walls.length; _i++) {
+        var currentWall = this.walls[_i];
+        var _hasCollision = _collisions2.default.aabb(this.snake.head(), currentWall);
+
+        if (_hasCollision) {
+          this.end();
+        }
+      }
 
       var ateFood = _collisions2.default.aabb(this.snake.head(), this.food);
       if (ateFood) {
@@ -1253,13 +1255,15 @@ var Snake = function () {
   function Snake(point) {
     (0, _classCallCheck3.default)(this, Snake);
 
-    this.nodes = [new _snakeNode2.default(point, 4, 4)];
+    this.nodes = [new _snakeNode2.default({ position: point })];
     this.velocity = 4; // pixels per tick
     this.direction = _directions.EAST;
 
     for (var i = 1; i < 5; i++) {
       this.grow();
     }
+
+    debugger;
   }
 
   (0, _createClass3.default)(Snake, [{
@@ -1298,7 +1302,7 @@ var Snake = function () {
     key: 'grow',
     value: function grow() {
       var nextPoint = this.nextPosition();
-      var newNode = new _snakeNode2.default(nextPoint, 4, 4);
+      var newNode = new _snakeNode2.default({ position: nextPoint });
 
       this.nodes.unshift(newNode);
     }
@@ -1464,6 +1468,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _assign = __webpack_require__(57);
+
+var _assign2 = _interopRequireDefault(_assign);
+
 var _getPrototypeOf = __webpack_require__(26);
 
 var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
@@ -1484,19 +1492,25 @@ var _gameObject = __webpack_require__(35);
 
 var _gameObject2 = _interopRequireDefault(_gameObject);
 
+var _point = __webpack_require__(36);
+
+var _point2 = _interopRequireDefault(_point);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var SnakeNode = function (_GameObject) {
   (0, _inherits3.default)(SnakeNode, _GameObject);
 
-  function SnakeNode(point) {
+  function SnakeNode(options) {
     (0, _classCallCheck3.default)(this, SnakeNode);
 
-    var nodeWidth = 4;
-    var nodeHeight = 4;
-    var backgroundColor = "black";
+    var defaults = {
+      width: 4,
+      height: 4,
+      backgroundColor: "black"
+    };
 
-    return (0, _possibleConstructorReturn3.default)(this, (SnakeNode.__proto__ || (0, _getPrototypeOf2.default)(SnakeNode)).call(this, point, nodeWidth, nodeHeight));
+    return (0, _possibleConstructorReturn3.default)(this, (SnakeNode.__proto__ || (0, _getPrototypeOf2.default)(SnakeNode)).call(this, (0, _assign2.default)({}, defaults, options)));
   }
 
   return SnakeNode;
@@ -2254,38 +2268,34 @@ var Wall = function (_GameObject) {
     (0, _classCallCheck3.default)(this, Wall);
 
     var wallThickness = 10;
-    var styles = {
+    var options = {
       backgroundColor: "red"
-
-      // TODO: Make this smaller
-    };var point = null;
-    var width = null;
-    var height = null;
+    };
 
     switch (direction) {
       case _directions.NORTH:
-        point = new _point2.default(0, 0);
-        width = window.innerWidth;
-        height = wallThickness;
+        options.position = new _point2.default(0, 0);
+        options.width = window.innerWidth;
+        options.height = wallThickness;
         break;
       case _directions.EAST:
-        point = new _point2.default(window.innerWidth - wallThickness, 0);
-        width = wallThickness;
-        height = window.innerHeight;
+        options.position = new _point2.default(window.innerWidth - wallThickness, 0);
+        options.width = wallThickness;
+        options.height = window.innerHeight;
         break;
       case _directions.SOUTH:
-        point = new _point2.default(0, window.innerHeight - wallThickness);
-        width = window.innerWidth;
-        height = wallThickness;
+        options.position = new _point2.default(0, window.innerHeight - wallThickness);
+        options.width = window.innerWidth;
+        options.height = wallThickness;
         break;
       case _directions.WEST:
-        point = new _point2.default(0, 0);
-        width = wallThickness;
-        height = window.innerHeight;
+        options.position = new _point2.default(0, 0);
+        options.width = wallThickness;
+        options.height = window.innerHeight;
         break;
     }
 
-    return (0, _possibleConstructorReturn3.default)(this, (Wall.__proto__ || (0, _getPrototypeOf2.default)(Wall)).call(this, point, width, height));
+    return (0, _possibleConstructorReturn3.default)(this, (Wall.__proto__ || (0, _getPrototypeOf2.default)(Wall)).call(this, options));
   }
 
   return Wall;
@@ -2303,6 +2313,10 @@ exports.default = Wall;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _assign = __webpack_require__(57);
+
+var _assign2 = _interopRequireDefault(_assign);
 
 var _getPrototypeOf = __webpack_require__(26);
 
@@ -2324,21 +2338,27 @@ var _gameObject = __webpack_require__(35);
 
 var _gameObject2 = _interopRequireDefault(_gameObject);
 
+var _point = __webpack_require__(36);
+
+var _point2 = _interopRequireDefault(_point);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Food = function (_GameObject) {
   (0, _inherits3.default)(Food, _GameObject);
 
-  function Food(point) {
+  function Food() {
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     (0, _classCallCheck3.default)(this, Food);
 
-    var width = 10;
-    var height = 10;
-    var options = {
-      backgroundColor: "yellow"
+    var defaults = {
+      position: new _point2.default(0, 0),
+      width: 10,
+      height: 10,
+      backgroundColor: "purple"
     };
 
-    return (0, _possibleConstructorReturn3.default)(this, (Food.__proto__ || (0, _getPrototypeOf2.default)(Food)).call(this, point, width, height, options));
+    return (0, _possibleConstructorReturn3.default)(this, (Food.__proto__ || (0, _getPrototypeOf2.default)(Food)).call(this, (0, _assign2.default)({}, defaults, options)));
   }
 
   return Food;

@@ -1,11 +1,13 @@
+import Point from './utilities/point'
+
 export default class GameObject {
-  constructor(point, width, height, options = {}) {
-    this.width = width
-    this.height = height
+  constructor(options = {}) {
+    this.position = options.position || new Point(0, 0)
+    this.width = options.width || 10
+    this.height = options.height || 10
     this.backgroundColor = options.backgroundColor || "#000"
-    this.id = Math.random() * 10000000
     this.domElement = this.createDomElement()
-    this.setPosition(point)
+    this.setPosition(this.position)
   }
 
   setPosition(point) {

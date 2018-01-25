@@ -5,38 +5,33 @@ import { NORTH, EAST, SOUTH, WEST } from './utilities/directions'
 export default class Wall extends GameObject {
   constructor(direction) {
     const wallThickness = 10
-    const styles = {
+    const options = {
       backgroundColor: "red"
     }
 
-    // TODO: Make this smaller
-    let point = null
-    let width = null
-    let height = null
-
     switch (direction) {
       case NORTH:
-        point = new Point(0, 0)
-        width = window.innerWidth
-        height = wallThickness
+        options.position = new Point(0, 0)
+        options.width = window.innerWidth
+        options.height = wallThickness
         break;
       case EAST:
-        point = new Point(window.innerWidth - wallThickness, 0)
-        width = wallThickness
-        height = window.innerHeight
+        options.position = new Point(window.innerWidth - wallThickness, 0)
+        options.width = wallThickness
+        options.height = window.innerHeight
         break;
       case SOUTH:
-        point = new Point(0, window.innerHeight - wallThickness)
-        width = window.innerWidth
-        height = wallThickness
+        options.position = new Point(0, window.innerHeight - wallThickness)
+        options.width = window.innerWidth
+        options.height = wallThickness
         break;
       case WEST:
-        point = new Point(0, 0)
-        width = wallThickness
-        height = window.innerHeight
+        options.position = new Point(0, 0)
+        options.width = wallThickness
+        options.height = window.innerHeight
         break;
     }
 
-    super(point, width, height)
+    super(options)
   }
 }

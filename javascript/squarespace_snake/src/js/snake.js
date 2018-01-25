@@ -4,13 +4,15 @@ import { NORTH, EAST, SOUTH, WEST } from './utilities/directions'
 
 export default class Snake {
   constructor(point) {
-    this.nodes = [new SnakeNode(point, 4, 4)]
+    this.nodes = [new SnakeNode({position: point})]
     this.velocity = 4 // pixels per tick
     this.direction = EAST
 
     for (let i = 1; i < 5; i++) {
       this.grow()
     }
+
+    debugger
   }
 
   head() {
@@ -43,7 +45,7 @@ export default class Snake {
 
   grow() {
     const nextPoint = this.nextPosition()
-    const newNode = new SnakeNode(nextPoint, 4, 4)
+    const newNode = new SnakeNode({position: nextPoint})
 
     this.nodes.unshift(newNode)
   }

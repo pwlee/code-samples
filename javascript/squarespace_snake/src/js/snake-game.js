@@ -40,7 +40,7 @@ export default class SnakeGame {
     const randY = Math.random() * window.innerHeight
     const randomPoint = new Point(randX, randY)
 
-    return new Food(randomPoint)
+    return new Food({position: randomPoint})
   }
 
   eatFood() {
@@ -50,31 +50,31 @@ export default class SnakeGame {
   }
 
   checkForCollision() {
-    const collidables = this.snake.body().concat(this.walls)
-    const hasCollision = collidables.some((collidable) => {
-      return Collision.aabb(this.snake.head(), collidable)
-    })
+    // const collidables = this.snake.body().concat(this.walls)
+    // const hasCollision = collidables.some((collidable) => {
+    //   return Collision.aabb(this.snake.head(), collidable)
+    // })
+    //
+    // if (hasCollision) {
+    //   this.end()
+    // }
+    for (let i = 1; i < this.snake.nodes.length; i++) {
+      const currentNode = this.snake.nodes[i]
+      const hasCollision = Collision.aabb(this.snake.head(), currentNode)
 
-    if (hasCollision) {
-      this.end()
+      if (hasCollision) {
+        this.end()
+      }
     }
-    // for (let i = 1; i < this.snake.nodes.length; i++) {
-    //   const currentNode = this.snake.nodes[i]
-    //   const hasCollision = Collision.aabb(this.snake.head(), currentNode)
-    //
-    //   if (hasCollision) {
-    //     this.end()
-    //   }
-    // }
-    //
-    // for (let i = 0; i < this.walls.length; i++) {
-    //   const currentWall = this.walls[i]
-    //   const hasCollision = Collision.aabb(this.snake.head(), currentWall)
-    //
-    //   if (hasCollision) {
-    //     this.end()
-    //   }
-    // }
+
+    for (let i = 0; i < this.walls.length; i++) {
+      const currentWall = this.walls[i]
+      const hasCollision = Collision.aabb(this.snake.head(), currentWall)
+
+      if (hasCollision) {
+        this.end()
+      }
+    }
 
     const ateFood = Collision.aabb(this.snake.head(), this.food)
     if (ateFood) {
