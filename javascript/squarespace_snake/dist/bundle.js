@@ -1262,8 +1262,6 @@ var Snake = function () {
     for (var i = 1; i < 5; i++) {
       this.grow();
     }
-
-    debugger;
   }
 
   (0, _createClass3.default)(Snake, [{

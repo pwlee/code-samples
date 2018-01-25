@@ -11,8 +11,6 @@ export default class Snake {
     for (let i = 1; i < 5; i++) {
       this.grow()
     }
-
-    debugger
   }
 
   head() {
