@@ -4,5 +4,5 @@ import SnakeGame from './snake-game'
 const styles = require('../css/main.scss')
 
 document.addEventListener("DOMContentLoaded", () => {
-  const game = new SnakeGame()
+  const game = new SnakeGame('game-frame')
 })

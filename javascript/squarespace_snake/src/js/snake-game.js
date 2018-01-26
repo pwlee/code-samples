@@ -6,12 +6,12 @@ import Collision from './utilities/collisions'
 import { NORTH, EAST, SOUTH, WEST, KEYCODES, OPPOSITE_DIRECTIONS } from './utilities/directions'
 
 export default class SnakeGame {
-  constructor() {
+  constructor(canvasId) {
     this.snake = null
     this.food = null
     this.walls = null
     this.intervalId = null
-    this.canvas = this._setupCanvas()
+    this.canvas = this._setupCanvas(canvasId)
 
     document.onkeydown = this._onKeyDown.bind(this)
     window.onresize = this._onResize.bind(this)
@@ -81,8 +81,8 @@ export default class SnakeGame {
     document.getElementById('game-over').classList.add('hide')
   }
 
-  _setupCanvas() {
-    const canvas = document.getElementById('game-frame')
+  _setupCanvas(canvasId) {
+    const canvas = document.getElementById(canvasId)
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
 

@@ -1008,7 +1008,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var styles = __webpack_require__(99);
 
 document.addEventListener("DOMContentLoaded", function () {
-  var game = new _snakeGame2.default();
+  var game = new _snakeGame2.default('game-frame');
 });
 
 /***/ }),
@@ -1055,14 +1055,14 @@ var _directions = __webpack_require__(38);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var SnakeGame = function () {
-  function SnakeGame() {
+  function SnakeGame(canvasId) {
     (0, _classCallCheck3.default)(this, SnakeGame);
 
     this.snake = null;
     this.food = null;
     this.walls = null;
     this.intervalId = null;
-    this.canvas = this._setupCanvas();
+    this.canvas = this._setupCanvas(canvasId);
 
     document.onkeydown = this._onKeyDown.bind(this);
     window.onresize = this._onResize.bind(this);
@@ -1147,8 +1147,8 @@ var SnakeGame = function () {
     }
   }, {
     key: '_setupCanvas',
-    value: function _setupCanvas() {
-      var canvas = document.getElementById('game-frame');
+    value: function _setupCanvas(canvasId) {
+      var canvas = document.getElementById(canvasId);
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
 
