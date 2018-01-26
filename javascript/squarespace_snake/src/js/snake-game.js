@@ -97,9 +97,7 @@ export default class SnakeGame {
     this.gameOverElement.classList.add('hide')
   }
 
-  // --------------
   // Event Handlers
-  // --------------
   onTick() {
     this.snake.forward()
     this.checkForCollision()

@@ -1,14 +1,16 @@
+// TODO: DONE
+
 import SnakeNode from './snake-node'
 import Point from './utilities/point'
 import { NORTH, EAST, SOUTH, WEST } from './utilities/directions'
 
 export default class Snake {
-  constructor(point) {
-    this.nodes = [new SnakeNode({position: point})]
+  constructor(startPoint, snakeLength = 20) {
+    this.nodes = [new SnakeNode({position: startPoint})]
     this.velocity = 4 // pixels per tick
     this.direction = EAST
 
-    for (let i = 1; i < 5; i++) {
+    for (let i = 0; i < snakeLength - 1; i++) {
       this.grow()
     }
   }
@@ -27,18 +29,17 @@ export default class Snake {
 
   forward() {
     // Given a snake with nodes which are positioned like:
-    //       [2][1]->
-    //       [3]
-    // [6][5][4]
+    //       [b][a]->
+    // [e][d][c]
     //
-    // We can move one 'step' forward by simply moving the
-    // last node to the front. Example:
-    //       [2][1][6]->
-    //       [3]
-    //    [5][4]
-    const newHead = this.nodes.pop()
-    newHead.setPosition(this.nextPosition())
-    this.nodes.unshift(newHead)
+    // We can move one 'step' forward by simply moving
+    // the last node to the front.
+    //       [b][a][e]->
+    //    [d][c]
+    const nextPosition = this.nextPosition()
+
+    this.nodes.unshift(this.nodes.pop())
+    this.head().setPosition(nextPosition)
   }
 
   grow() {
@@ -52,7 +53,6 @@ export default class Snake {
   nextPosition() {
     const newPosition = Object.assign(new Point(), this.head().position)
 
-    // TODO: Can we make this smaller?
     switch (this.direction) {
       case NORTH:
         newPosition.y -= this.velocity

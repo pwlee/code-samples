@@ -1024,7 +1024,7 @@ var _snakeGame2 = _interopRequireDefault(_snakeGame);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Include entry point for styles for Webpack
-var styles = __webpack_require__(99);
+var styles = __webpack_require__(99); // TODO: DONE
 
 document.addEventListener("DOMContentLoaded", function () {
   var game = new _snakeGame2.default();
@@ -1181,9 +1181,7 @@ var SnakeGame = function () {
       this.gameOverElement.classList.add('hide');
     }
 
-    // --------------
     // Event Handlers
-    // --------------
 
   }, {
     key: 'onTick',
@@ -1296,14 +1294,15 @@ var _directions = __webpack_require__(38);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Snake = function () {
-  function Snake(point) {
+  function Snake(startPoint) {
+    var snakeLength = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 20;
     (0, _classCallCheck3.default)(this, Snake);
 
-    this.nodes = [new _snakeNode2.default({ position: point })];
+    this.nodes = [new _snakeNode2.default({ position: startPoint })];
     this.velocity = 4; // pixels per tick
     this.direction = _directions.EAST;
 
-    for (var i = 1; i < 5; i++) {
+    for (var i = 0; i < snakeLength - 1; i++) {
       this.grow();
     }
   }
@@ -1327,18 +1326,17 @@ var Snake = function () {
     key: 'forward',
     value: function forward() {
       // Given a snake with nodes which are positioned like:
-      //       [2][1]->
-      //       [3]
-      // [6][5][4]
+      //       [b][a]->
+      // [e][d][c]
       //
-      // We can move one 'step' forward by simply moving the
-      // last node to the front. Example:
-      //       [2][1][6]->
-      //       [3]
-      //    [5][4]
-      var newHead = this.nodes.pop();
-      newHead.setPosition(this.nextPosition());
-      this.nodes.unshift(newHead);
+      // We can move one 'step' forward by simply moving
+      // the last node to the front.
+      //       [b][a][e]->
+      //    [d][c]
+      var nextPosition = this.nextPosition();
+
+      this.nodes.unshift(this.nodes.pop());
+      this.head().setPosition(nextPosition);
     }
   }, {
     key: 'grow',
@@ -1356,7 +1354,6 @@ var Snake = function () {
     value: function nextPosition() {
       var newPosition = (0, _assign2.default)(new _point2.default(), this.head().position);
 
-      // TODO: Can we make this smaller?
       switch (this.direction) {
         case _directions.NORTH:
           newPosition.y -= this.velocity;
@@ -1376,7 +1373,7 @@ var Snake = function () {
     }
   }]);
   return Snake;
-}();
+}(); // TODO: DONE
 
 exports.default = Snake;
 
@@ -1533,6 +1530,8 @@ var _point = __webpack_require__(12);
 var _point2 = _interopRequireDefault(_point);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// TODO DONE
 
 var SnakeNode = function (_GameObject) {
   (0, _inherits3.default)(SnakeNode, _GameObject);
@@ -2306,9 +2305,9 @@ var Wall = function (_GameObject) {
     var wallThickness = 10;
     var options = {
       backgroundColor: "rgba(50, 50, 50, 1)"
+    };
 
-      // TODO: Can we make this smaller?
-    };switch (direction) {
+    switch (direction) {
       case _directions.NORTH:
         options.position = new _point2.default(0, 0);
         options.width = window.innerWidth;
@@ -2335,7 +2334,8 @@ var Wall = function (_GameObject) {
   }
 
   return Wall;
-}(_gameObject2.default);
+}(_gameObject2.default); // TODO: DONE
+
 
 exports.default = Wall;
 

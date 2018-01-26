@@ -2,7 +2,7 @@ var path = require('path');
 
 // Auto generate index.html on build and place it in ./dist/
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-
+// Extract in-lined style block into its own file
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
