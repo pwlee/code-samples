@@ -684,36 +684,16 @@ var GameObject = function () {
     this.position = options.position || new _point2.default(0, 0);
     this.width = options.width || 10;
     this.height = options.height || 10;
-    this.backgroundColor = options.backgroundColor || "#000";
-    this.domElement = this.createDomElement();
-    this.setPosition(this.position);
+    this.backgroundColor = options.backgroundColor || '#000';
   }
 
   (0, _createClass3.default)(GameObject, [{
-    key: 'setPosition',
-    value: function setPosition(point) {
-      this.position = point;
-      this.domElement.style.top = this.position.y + 'px';
-      this.domElement.style.left = this.position.x + 'px';
-    }
-  }, {
-    key: 'createDomElement',
-    value: function createDomElement() {
-      var domElement = document.createElement('div');
+    key: 'render',
+    value: function render(canvas) {
+      var ctx = canvas.getContext('2d');
 
-      domElement.style.width = this.width + 'px';
-      domElement.style.height = this.height + 'px';
-      domElement.style.position = 'absolute';
-      domElement.style.backgroundColor = this.backgroundColor;
-
-      document.body.appendChild(domElement);
-
-      return domElement;
-    }
-  }, {
-    key: 'destroy',
-    value: function destroy() {
-      this.domElement.parentNode.removeChild(this.domElement);
+      ctx.fillStyle = this.backgroundColor;
+      ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
   }]);
   return GameObject;
@@ -1081,6 +1061,9 @@ var SnakeGame = function () {
     this.food = null;
     this.intervalId = null;
     this.walls = this.spawnWalls();
+    this.canvas = document.getElementById('game-frame');
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
     this.introElement = document.getElementById('intro');
     this.gameOverElement = document.getElementById('game-over');
 
@@ -1091,7 +1074,6 @@ var SnakeGame = function () {
   (0, _createClass3.default)(SnakeGame, [{
     key: 'start',
     value: function start() {
-      this.cleanup();
       this.hideModals();
 
       this.snake = new _snake2.default(new _point2.default(200, 200));
@@ -1107,17 +1089,6 @@ var SnakeGame = function () {
       this.showModal(this.gameOverElement);
       clearInterval(this.intervalId);
       this.intervalId = null;
-    }
-  }, {
-    key: 'cleanup',
-    value: function cleanup() {
-      if (!this.snake) {
-        return;
-      }
-
-      this.snake.nodes.concat(this.food).forEach(function (gameObject) {
-        gameObject.destroy();
-      });
     }
   }, {
     key: 'spawnWalls',
@@ -1136,21 +1107,15 @@ var SnakeGame = function () {
       return new _food2.default({ position: randomPoint });
     }
   }, {
-    key: 'eatFood',
-    value: function eatFood() {
-      this.food.destroy();
-      this.food = this.spawnFood();
-      this.snake.grow();
-    }
-  }, {
-    key: 'checkForCollision',
-    value: function checkForCollision() {
+    key: 'handleCollisions',
+    value: function handleCollisions() {
       if (this.collidedWithDeath()) {
         this.end();
       }
 
       if (this.ateFood()) {
-        this.eatFood();
+        this.food = this.spawnFood();
+        this.snake.grow();
       }
     }
   }, {
@@ -1180,6 +1145,19 @@ var SnakeGame = function () {
       this.introElement.classList.add('hide');
       this.gameOverElement.classList.add('hide');
     }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var ctx = this.canvas.getContext('2d');
+      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+      var renderables = this.walls.concat([this.snake, this.food]);
+      renderables.forEach(function (gameObject) {
+        gameObject.render(_this2.canvas);
+      });
+    }
 
     // Event Handlers
 
@@ -1187,7 +1165,8 @@ var SnakeGame = function () {
     key: 'onTick',
     value: function onTick() {
       this.snake.forward();
-      this.checkForCollision();
+      this.render();
+      this.handleCollisions();
     }
   }, {
     key: 'onKeyDown',
@@ -1210,11 +1189,10 @@ var SnakeGame = function () {
   }, {
     key: 'onResize',
     value: function onResize() {
-      this.walls.forEach(function (wall) {
-        wall.destroy();
-      });
-
       this.walls = this.spawnWalls();
+
+      this.canvas.width = window.innerWidth;
+      this.canvas.height = window.innerHeight;
     }
   }]);
   return SnakeGame;
@@ -1336,7 +1314,7 @@ var Snake = function () {
       var nextPosition = this.nextPosition();
 
       this.nodes.unshift(this.nodes.pop());
-      this.head().setPosition(nextPosition);
+      this.head().position = nextPosition;
     }
   }, {
     key: 'grow',
@@ -1370,6 +1348,13 @@ var Snake = function () {
       }
 
       return newPosition;
+    }
+  }, {
+    key: 'render',
+    value: function render(canvas) {
+      this.nodes.forEach(function (node) {
+        node.render(canvas);
+      });
     }
   }]);
   return Snake;

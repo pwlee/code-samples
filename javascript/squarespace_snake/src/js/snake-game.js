@@ -11,6 +11,9 @@ export default class SnakeGame {
     this.food = null
     this.intervalId = null
     this.walls = this.spawnWalls()
+    this.canvas = document.getElementById('game-frame')
+    this.canvas.width = window.innerWidth
+    this.canvas.height = window.innerHeight
     this.introElement = document.getElementById('intro')
     this.gameOverElement = document.getElementById('game-over')
 
@@ -19,7 +22,6 @@ export default class SnakeGame {
   }
 
   start() {
-    this.cleanup()
     this.hideModals()
 
     this.snake = new Snake(new Point(200, 200))
@@ -36,16 +38,6 @@ export default class SnakeGame {
     this.intervalId = null
   }
 
-  cleanup() {
-    if (!this.snake) {
-      return
-    }
-
-    this.snake.nodes.concat(this.food).forEach((gameObject) => {
-      gameObject.destroy()
-    })
-  }
-
   spawnWalls() {
     return [NORTH, EAST, SOUTH, WEST].map((direction) => {
       return new Wall(direction)
@@ -60,19 +52,14 @@ export default class SnakeGame {
     return new Food({position: randomPoint})
   }
 
-  eatFood() {
-    this.food.destroy()
-    this.food = this.spawnFood()
-    this.snake.grow()
-  }
-
-  checkForCollision() {
+  handleCollisions() {
     if (this.collidedWithDeath()) {
       this.end()
     }
 
     if (this.ateFood()) {
-      this.eatFood()
+      this.food = this.spawnFood()
+      this.snake.grow()
     }
   }
 
@@ -97,10 +84,21 @@ export default class SnakeGame {
     this.gameOverElement.classList.add('hide')
   }
 
+  render() {
+    const ctx = this.canvas.getContext('2d')
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+
+    const renderables = this.walls.concat([this.snake, this.food])
+    renderables.forEach((gameObject) => {
+      gameObject.render(this.canvas)
+    })
+  }
+
   // Event Handlers
   onTick() {
     this.snake.forward()
-    this.checkForCollision()
+    this.render()
+    this.handleCollisions()
   }
 
   onKeyDown(e) {
@@ -121,10 +119,9 @@ export default class SnakeGame {
   }
 
   onResize() {
-    this.walls.forEach((wall) => {
-      wall.destroy()
-    })
-
     this.walls = this.spawnWalls()
+
+    this.canvas.width = window.innerWidth
+    this.canvas.height = window.innerHeight
   }
 }

@@ -39,7 +39,7 @@ export default class Snake {
     const nextPosition = this.nextPosition()
 
     this.nodes.unshift(this.nodes.pop())
-    this.head().setPosition(nextPosition)
+    this.head().position = nextPosition
   }
 
   grow() {
@@ -69,5 +69,11 @@ export default class Snake {
     }
 
     return newPosition
+  }
+
+  render(canvas) {
+    this.nodes.forEach((node) => {
+      node.render(canvas)
+    })
   }
 }

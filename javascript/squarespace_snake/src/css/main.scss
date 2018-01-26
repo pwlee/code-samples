@@ -1,5 +1,19 @@
+html, body, #game-frame {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
 body {
   background-color: rgba(155, 195, 39, .5);
+}
+
+#game-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
 .modal {

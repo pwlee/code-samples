@@ -7,31 +7,13 @@ export default class GameObject {
     this.position = options.position || new Point(0, 0)
     this.width = options.width || 10
     this.height = options.height || 10
-    this.backgroundColor = options.backgroundColor || "#000"
-    this.domElement = this.createDomElement()
-    this.setPosition(this.position)
+    this.backgroundColor = options.backgroundColor || '#000'
   }
 
-  setPosition(point) {
-    this.position = point
-    this.domElement.style.top = this.position.y + 'px'
-    this.domElement.style.left = this.position.x + 'px'
-  }
+  render(canvas) {
+    const ctx = canvas.getContext('2d')
 
-  createDomElement() {
-    const domElement = document.createElement('div')
-
-    domElement.style.width = this.width + 'px'
-    domElement.style.height = this.height + 'px'
-    domElement.style.position = 'absolute'
-    domElement.style.backgroundColor = this.backgroundColor
-
-    document.body.appendChild(domElement)
-
-    return domElement
-  }
-
-  destroy() {
-    this.domElement.parentNode.removeChild(this.domElement)
+    ctx.fillStyle = this.backgroundColor
+    ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
   }
 }
