@@ -34,13 +34,17 @@ export default class SnakeGame {
     this.walls = this.spawnWalls()
     this.food = this.spawnFood()
 
-    this.intervalId = setInterval(this.onTick.bind(this), 20)
+    if (this.intervalId == null) {
+      this.intervalId = setInterval(this.onTick.bind(this), 20)
+    }
+
     window.onresize = this.onResize.bind(this)
   }
 
   end() {
     this.showModal(this.gameOverElement)
     clearInterval(this.intervalId)
+    this.intervalId = null
   }
 
   cleanup() {
@@ -60,11 +64,11 @@ export default class SnakeGame {
   }
 
   spawnFood() {
-    const randX = Math.random() * window.innerWidth
-    const randY = Math.random() * window.innerHeight
-    const randomPoint = new Point(randX, randY)
+    const randX = Math.random() * window.innerWidth - 20
+    const randY = Math.random() * window.innerHeight - 20
+    const randomPoint = new Point(randX + 10, randY + 10)
 
-    return new Food({position: randomPoint})
+    return new Food({ position: randomPoint })
   }
 
   eatFood() {
@@ -74,37 +78,25 @@ export default class SnakeGame {
   }
 
   checkForCollision() {
-    // TODO: make this shorter
-    // const collidables = this.snake.body().concat(this.walls)
-    // const hasCollision = collidables.some((collidable) => {
-    //   return Collision.aabb(this.snake.head(), collidable)
-    // })
-    //
-    // if (hasCollision) {
-    //   this.end()
-    // }
-    for (let i = 1; i < this.snake.nodes.length; i++) {
-      const currentNode = this.snake.nodes[i]
-      const hasCollision = Collision.aabb(this.snake.head(), currentNode)
-
-      if (hasCollision) {
-        this.end()
-      }
+    if (this.collidedWithDeath()) {
+      this.end()
     }
 
-    for (let i = 0; i < this.walls.length; i++) {
-      const currentWall = this.walls[i]
-      const hasCollision = Collision.aabb(this.snake.head(), currentWall)
-
-      if (hasCollision) {
-        this.end()
-      }
-    }
-
-    const ateFood = Collision.aabb(this.snake.head(), this.food)
-    if (ateFood) {
+    if (this.ateFood()) {
       this.eatFood()
     }
+  }
+
+  collidedWithDeath() {
+    const collidables = this.snake.body().concat(this.walls)
+
+    return collidables.some((collidable) => {
+      return Collision.aabb(this.snake.head(), collidable)
+    })
+  }
+
+  ateFood() {
+    return Collision.aabb(this.snake.head(), this.food)
   }
 
   onTick() {

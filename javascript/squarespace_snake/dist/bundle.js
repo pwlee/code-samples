@@ -1100,7 +1100,10 @@ var SnakeGame = function () {
       this.walls = this.spawnWalls();
       this.food = this.spawnFood();
 
-      this.intervalId = setInterval(this.onTick.bind(this), 20);
+      if (this.intervalId == null) {
+        this.intervalId = setInterval(this.onTick.bind(this), 20);
+      }
+
       window.onresize = this.onResize.bind(this);
     }
   }, {
@@ -1108,6 +1111,7 @@ var SnakeGame = function () {
     value: function end() {
       this.showModal(this.gameOverElement);
       clearInterval(this.intervalId);
+      this.intervalId = null;
     }
   }, {
     key: 'cleanup',
@@ -1130,9 +1134,9 @@ var SnakeGame = function () {
   }, {
     key: 'spawnFood',
     value: function spawnFood() {
-      var randX = Math.random() * window.innerWidth;
-      var randY = Math.random() * window.innerHeight;
-      var randomPoint = new _point2.default(randX, randY);
+      var randX = Math.random() * window.innerWidth - 20;
+      var randY = Math.random() * window.innerHeight - 20;
+      var randomPoint = new _point2.default(randX + 10, randY + 10);
 
       return new _food2.default({ position: randomPoint });
     }
@@ -1146,37 +1150,29 @@ var SnakeGame = function () {
   }, {
     key: 'checkForCollision',
     value: function checkForCollision() {
-      // TODO: make this shorter
-      // const collidables = this.snake.body().concat(this.walls)
-      // const hasCollision = collidables.some((collidable) => {
-      //   return Collision.aabb(this.snake.head(), collidable)
-      // })
-      //
-      // if (hasCollision) {
-      //   this.end()
-      // }
-      for (var i = 1; i < this.snake.nodes.length; i++) {
-        var currentNode = this.snake.nodes[i];
-        var hasCollision = _collisions2.default.aabb(this.snake.head(), currentNode);
-
-        if (hasCollision) {
-          this.end();
-        }
+      if (this.collidedWithDeath()) {
+        this.end();
       }
 
-      for (var _i = 0; _i < this.walls.length; _i++) {
-        var currentWall = this.walls[_i];
-        var _hasCollision = _collisions2.default.aabb(this.snake.head(), currentWall);
-
-        if (_hasCollision) {
-          this.end();
-        }
-      }
-
-      var ateFood = _collisions2.default.aabb(this.snake.head(), this.food);
-      if (ateFood) {
+      if (this.ateFood()) {
         this.eatFood();
       }
+    }
+  }, {
+    key: 'collidedWithDeath',
+    value: function collidedWithDeath() {
+      var _this = this;
+
+      var collidables = this.snake.body().concat(this.walls);
+
+      return collidables.some(function (collidable) {
+        return _collisions2.default.aabb(_this.snake.head(), collidable);
+      });
+    }
+  }, {
+    key: 'ateFood',
+    value: function ateFood() {
+      return _collisions2.default.aabb(this.snake.head(), this.food);
     }
   }, {
     key: 'onTick',
