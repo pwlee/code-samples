@@ -11,10 +11,7 @@ export default class SnakeGame {
     this.food = null
     this.intervalId = null
     this.walls = this.createWalls()
-    this.canvas = document.getElementById('game-frame')
-    this.canvas.width = window.innerWidth
-    this.canvas.height = window.innerHeight
-    this.gameOverElement = document.getElementById('game-over')
+    this.canvas = this.setupCanvas()
 
     document.onkeydown = this.onKeyDown.bind(this)
     window.onresize = this.onResize.bind(this)
@@ -73,6 +70,14 @@ export default class SnakeGame {
   hideModals(element) {
     document.getElementById('intro').classList.add('hide')
     document.getElementById('game-over').classList.add('hide')
+  }
+
+  setupCanvas() {
+    const canvas = document.getElementById('game-frame')
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+
+    return canvas
   }
 
   render() {
