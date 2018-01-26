@@ -1,5 +1,3 @@
-// TODO: DONE
-
 export const NORTH = 1
 export const EAST  = 2
 export const SOUTH = 3

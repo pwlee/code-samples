@@ -1,4 +1,3 @@
-// TODO: DONE
 import GameObject from './game-object'
 import Point from './utilities/point'
 import { NORTH, EAST, SOUTH, WEST } from './utilities/directions'

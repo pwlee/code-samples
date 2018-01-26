@@ -9,57 +9,66 @@ export default class SnakeGame {
   constructor() {
     this.snake = null
     this.food = null
+    this.walls = null
     this.intervalId = null
-    this.walls = this.createWalls()
-    this.canvas = this.setupCanvas()
+    this.canvas = this._setupCanvas()
 
-    document.onkeydown = this.onKeyDown.bind(this)
-    window.onresize = this.onResize.bind(this)
+    document.onkeydown = this._onKeyDown.bind(this)
+    window.onresize = this._onResize.bind(this)
   }
 
+  // ----------------------------------------------------------
+  // -----------------------  Public  -------------------------
+  // ----------------------------------------------------------
   start() {
-    this.hideModals()
-    this.snake = new Snake(new Point(200, 200))
-    this.food = this.createFood()
+    const center = new Point(this.canvas.width / 2, this.canvas.height / 2)
+
+    this._hideModals()
+    this.snake = new Snake(center)
+    this.food = this._createFood()
+    this.walls = this._createWalls()
 
     if (this.intervalId == null) {
-      this.intervalId = setInterval(this.onTick.bind(this), 20)
+      this.intervalId = setInterval(this._onTick.bind(this), 20)
     }
   }
 
-  end() {
+  // ----------------------------------------------------------
+  // -----------------------  Private  ------------------------
+  // ----------------------------------------------------------
+  _end() {
     document.getElementById('game-over').classList.remove('hide')
     clearInterval(this.intervalId)
     this.intervalId = null
   }
 
-  createWalls() {
+  _createWalls() {
     return [NORTH, EAST, SOUTH, WEST].map((direction) => {
       return new Wall(direction)
     })
   }
 
-  createFood() {
-    const randX = Math.floor(Math.random() * (window.innerWidth - 30))
-    const randY = Math.floor(Math.random() * (window.innerHeight - 30))
+  _createFood() {
+    const randX = Math.floor(Math.random() * (this.canvas.width - 30))
+    const randY = Math.floor(Math.random() * (this.canvas.height - 30))
     const randomPoint = new Point(randX + 10, randY + 10)
 
     return new Food({position: randomPoint})
   }
 
-  handleCollisions() {
-    if (this.collidedWithDeath()) {
-      this.end()
+  _handleCollisions() {
+    if (this._collidedWithDeath()) {
+      this._end()
     }
 
     const collidedWithfood = Collision.aabb(this.snake.head(), this.food)
     if (collidedWithfood) {
-      this.food = this.createFood()
+      this.food = this._createFood()
       this.snake.grow()
     }
   }
 
-  collidedWithDeath() {
+  _collidedWithDeath() {
     const collidables = this.snake.body().concat(this.walls)
 
     return collidables.some((collidable) => {
@@ -67,12 +76,12 @@ export default class SnakeGame {
     })
   }
 
-  hideModals(element) {
+  _hideModals(element) {
     document.getElementById('intro').classList.add('hide')
     document.getElementById('game-over').classList.add('hide')
   }
 
-  setupCanvas() {
+  _setupCanvas() {
     const canvas = document.getElementById('game-frame')
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
@@ -80,7 +89,7 @@ export default class SnakeGame {
     return canvas
   }
 
-  render() {
+  _render() {
     const ctx = this.canvas.getContext('2d')
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
@@ -91,13 +100,13 @@ export default class SnakeGame {
   }
 
   // Event Handlers
-  onTick() {
+  _onTick() {
     this.snake.forward()
-    this.render()
-    this.handleCollisions()
+    this._render()
+    this._handleCollisions()
   }
 
-  onKeyDown(e) {
+  _onKeyDown(e) {
     if (e.keyCode == 32) {
       return this.start()
     }
@@ -114,10 +123,10 @@ export default class SnakeGame {
     }
   }
 
-  onResize() {
-    this.walls = this.createWalls()
+  _onResize() {
+    this.walls = this._createWalls()
     this.canvas.width = window.innerWidth
     this.canvas.height = window.innerHeight
-    this.render()
+    this._render()
   }
 }

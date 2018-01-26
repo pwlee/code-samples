@@ -1,5 +1,3 @@
-// TODO: DONE
-
 import SnakeGame from './snake-game'
 
 // Include entry point for styles for Webpack

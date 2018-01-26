@@ -289,8 +289,6 @@ var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// TODO: DONE
-
 var Point = function Point(x, y) {
   (0, _classCallCheck3.default)(this, Point);
 
@@ -684,8 +682,13 @@ var GameObject = function () {
     this.position = options.position || new _point2.default(0, 0);
     this.width = options.width || 10;
     this.height = options.height || 10;
-    this.backgroundColor = options.backgroundColor || 'rgba(0,0,0,1)';
+    this.backgroundColor = options.backgroundColor || 'rgba(0, 0, 0, 1)';
   }
+
+  // ----------------------------------------------------------
+  // -----------------------  Public  -------------------------
+  // ----------------------------------------------------------
+
 
   (0, _createClass3.default)(GameObject, [{
     key: 'render',
@@ -697,7 +700,7 @@ var GameObject = function () {
     }
   }]);
   return GameObject;
-}(); // TODO: DONE
+}();
 
 exports.default = GameObject;
 
@@ -711,8 +714,6 @@ exports.default = GameObject;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-// TODO: DONE
-
 var NORTH = exports.NORTH = 1;
 var EAST = exports.EAST = 2;
 var SOUTH = exports.SOUTH = 3;
@@ -1004,7 +1005,7 @@ var _snakeGame2 = _interopRequireDefault(_snakeGame);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Include entry point for styles for Webpack
-var styles = __webpack_require__(99); // TODO: DONE
+var styles = __webpack_require__(99);
 
 document.addEventListener("DOMContentLoaded", function () {
   var game = new _snakeGame2.default();
@@ -1059,64 +1060,77 @@ var SnakeGame = function () {
 
     this.snake = null;
     this.food = null;
+    this.walls = null;
     this.intervalId = null;
-    this.walls = this.createWalls();
-    this.canvas = this.setupCanvas();
+    this.canvas = this._setupCanvas();
 
-    document.onkeydown = this.onKeyDown.bind(this);
-    window.onresize = this.onResize.bind(this);
+    document.onkeydown = this._onKeyDown.bind(this);
+    window.onresize = this._onResize.bind(this);
   }
+
+  // ----------------------------------------------------------
+  // -----------------------  Public  -------------------------
+  // ----------------------------------------------------------
+
 
   (0, _createClass3.default)(SnakeGame, [{
     key: 'start',
     value: function start() {
-      this.hideModals();
-      this.snake = new _snake2.default(new _point2.default(200, 200));
-      this.food = this.createFood();
+      var center = new _point2.default(this.canvas.width / 2, this.canvas.height / 2);
+
+      this._hideModals();
+      this.snake = new _snake2.default(center);
+      this.food = this._createFood();
+      this.walls = this._createWalls();
 
       if (this.intervalId == null) {
-        this.intervalId = setInterval(this.onTick.bind(this), 20);
+        this.intervalId = setInterval(this._onTick.bind(this), 20);
       }
     }
+
+    // ----------------------------------------------------------
+    // -----------------------  Private  ------------------------
+    // ----------------------------------------------------------
+
   }, {
-    key: 'end',
-    value: function end() {
+    key: '_end',
+    value: function _end() {
       document.getElementById('game-over').classList.remove('hide');
       clearInterval(this.intervalId);
       this.intervalId = null;
     }
   }, {
-    key: 'createWalls',
-    value: function createWalls() {
+    key: '_createWalls',
+    value: function _createWalls() {
       return [_directions.NORTH, _directions.EAST, _directions.SOUTH, _directions.WEST].map(function (direction) {
         return new _wall2.default(direction);
       });
     }
   }, {
-    key: 'createFood',
-    value: function createFood() {
-      var randX = Math.floor(Math.random() * (window.innerWidth - 30));
-      var randY = Math.floor(Math.random() * (window.innerHeight - 30));
+    key: '_createFood',
+    value: function _createFood() {
+      var randX = Math.floor(Math.random() * (this.canvas.width - 30));
+      var randY = Math.floor(Math.random() * (this.canvas.height - 30));
       var randomPoint = new _point2.default(randX + 10, randY + 10);
 
       return new _food2.default({ position: randomPoint });
     }
   }, {
-    key: 'handleCollisions',
-    value: function handleCollisions() {
-      if (this.collidedWithDeath()) {
-        this.end();
+    key: '_handleCollisions',
+    value: function _handleCollisions() {
+      if (this._collidedWithDeath()) {
+        this._end();
       }
 
       var collidedWithfood = _collisions2.default.aabb(this.snake.head(), this.food);
       if (collidedWithfood) {
-        this.food = this.createFood();
+        this.food = this._createFood();
         this.snake.grow();
       }
     }
   }, {
-    key: 'collidedWithDeath',
-    value: function collidedWithDeath() {
+    key: '_collidedWithDeath',
+    value: function _collidedWithDeath() {
       var _this = this;
 
       var collidables = this.snake.body().concat(this.walls);
@@ -1126,14 +1140,14 @@ var SnakeGame = function () {
       });
     }
   }, {
-    key: 'hideModals',
-    value: function hideModals(element) {
+    key: '_hideModals',
+    value: function _hideModals(element) {
       document.getElementById('intro').classList.add('hide');
       document.getElementById('game-over').classList.add('hide');
     }
   }, {
-    key: 'setupCanvas',
-    value: function setupCanvas() {
+    key: '_setupCanvas',
+    value: function _setupCanvas() {
       var canvas = document.getElementById('game-frame');
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -1141,8 +1155,8 @@ var SnakeGame = function () {
       return canvas;
     }
   }, {
-    key: 'render',
-    value: function render() {
+    key: '_render',
+    value: function _render() {
       var _this2 = this;
 
       var ctx = this.canvas.getContext('2d');
@@ -1157,15 +1171,15 @@ var SnakeGame = function () {
     // Event Handlers
 
   }, {
-    key: 'onTick',
-    value: function onTick() {
+    key: '_onTick',
+    value: function _onTick() {
       this.snake.forward();
-      this.render();
-      this.handleCollisions();
+      this._render();
+      this._handleCollisions();
     }
   }, {
-    key: 'onKeyDown',
-    value: function onKeyDown(e) {
+    key: '_onKeyDown',
+    value: function _onKeyDown(e) {
       if (e.keyCode == 32) {
         return this.start();
       }
@@ -1182,12 +1196,12 @@ var SnakeGame = function () {
       }
     }
   }, {
-    key: 'onResize',
-    value: function onResize() {
-      this.walls = this.createWalls();
+    key: '_onResize',
+    value: function _onResize() {
+      this.walls = this._createWalls();
       this.canvas.width = window.innerWidth;
       this.canvas.height = window.innerHeight;
-      this.render();
+      this._render();
     }
   }]);
   return SnakeGame;
@@ -1282,6 +1296,11 @@ var Snake = function () {
     });
   }
 
+  // ----------------------------------------------------------
+  // -----------------------  Public  -------------------------
+  // ----------------------------------------------------------
+
+
   (0, _createClass3.default)(Snake, [{
     key: 'head',
     value: function head() {
@@ -1291,11 +1310,6 @@ var Snake = function () {
     key: 'body',
     value: function body() {
       return this.nodes.slice(1, this.nodes.length);
-    }
-  }, {
-    key: 'tail',
-    value: function tail() {
-      return this.nodes[this.nodes.length - 1];
     }
   }, {
     key: 'render',
@@ -1311,7 +1325,7 @@ var Snake = function () {
       // moving the last node to the front. Ex:
       //       [b][a]->  ||     [b][a][e]->
       // [e][d][c]       ||  [d][c]
-      var nextPosition = this.nextPosition();
+      var nextPosition = this._nextPosition();
 
       this.nodes.unshift(this.nodes.pop());
       this.head().position = nextPosition;
@@ -1319,39 +1333,42 @@ var Snake = function () {
   }, {
     key: 'grow',
     value: function grow() {
-      var nextPoint = this.nextPosition();
+      var nextPoint = this._nextPosition();
       var newNode = new _snakeNode2.default({ position: nextPoint });
 
       this.nodes.unshift(newNode);
     }
 
-    // Based on the snake's velocity, determine where the head will go next
+    // ----------------------------------------------------------
+    // -----------------------  Private  ------------------------
+    // ----------------------------------------------------------
+    // Based on the velocity, determine where the head will go next
 
   }, {
-    key: 'nextPosition',
-    value: function nextPosition() {
-      var newPosition = (0, _assign2.default)(new _point2.default(), this.head().position);
+    key: '_nextPosition',
+    value: function _nextPosition() {
+      var position = (0, _assign2.default)(new _point2.default(), this.head().position);
 
       switch (this.direction) {
         case _directions.NORTH:
-          newPosition.y -= this.velocity;
+          position.y -= this.velocity;
           break;
         case _directions.EAST:
-          newPosition.x += this.velocity;
+          position.x += this.velocity;
           break;
         case _directions.SOUTH:
-          newPosition.y += this.velocity;
+          position.y += this.velocity;
           break;
         case _directions.WEST:
-          newPosition.x -= this.velocity;
+          position.x -= this.velocity;
           break;
       }
 
-      return newPosition;
+      return position;
     }
   }]);
   return Snake;
-}(); // TODO: DONE
+}();
 
 exports.default = Snake;
 
@@ -1508,8 +1525,6 @@ var _point = __webpack_require__(12);
 var _point2 = _interopRequireDefault(_point);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// TODO DONE
 
 var SnakeNode = function (_GameObject) {
   (0, _inherits3.default)(SnakeNode, _GameObject);
@@ -2312,8 +2327,7 @@ var Wall = function (_GameObject) {
   }
 
   return Wall;
-}(_gameObject2.default); // TODO: DONE
-
+}(_gameObject2.default);
 
 exports.default = Wall;
 
@@ -2358,8 +2372,6 @@ var _point2 = _interopRequireDefault(_point);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// TODO: DONE
-
 var Food = function (_GameObject) {
   (0, _inherits3.default)(Food, _GameObject);
 
@@ -2402,8 +2414,6 @@ var _createClass2 = __webpack_require__(14);
 var _createClass3 = _interopRequireDefault(_createClass2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// TODO: DONE.
 
 var Collision = function () {
   function Collision() {
