@@ -289,6 +289,8 @@ var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// TODO: DONE
+
 var Point = function Point(x, y) {
   (0, _classCallCheck3.default)(this, Point);
 
@@ -715,7 +717,7 @@ var GameObject = function () {
     }
   }]);
   return GameObject;
-}();
+}(); // TODO: DONE
 
 exports.default = GameObject;
 
@@ -729,6 +731,8 @@ exports.default = GameObject;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+// TODO: DONE
+
 var NORTH = exports.NORTH = 1;
 var EAST = exports.EAST = 2;
 var SOUTH = exports.SOUTH = 3;
@@ -1019,8 +1023,12 @@ var _snakeGame2 = _interopRequireDefault(_snakeGame);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// Include entry point for styles for Webpack
 var styles = __webpack_require__(99);
-var game = new _snakeGame2.default();
+
+document.addEventListener("DOMContentLoaded", function () {
+  var game = new _snakeGame2.default();
+});
 
 /***/ }),
 /* 52 */
@@ -1070,41 +1078,28 @@ var SnakeGame = function () {
     (0, _classCallCheck3.default)(this, SnakeGame);
 
     this.snake = null;
-    this.walls = null;
     this.food = null;
     this.intervalId = null;
+    this.walls = this.spawnWalls();
     this.introElement = document.getElementById('intro');
     this.gameOverElement = document.getElementById('game-over');
 
     document.onkeydown = this.onKeyDown.bind(this);
+    window.onresize = this.onResize.bind(this);
   }
 
   (0, _createClass3.default)(SnakeGame, [{
-    key: 'showModal',
-    value: function showModal(element) {
-      element.classList.remove('hide');
-    }
-  }, {
-    key: 'hideModals',
-    value: function hideModals(element) {
-      this.introElement.classList.add('hide');
-      this.gameOverElement.classList.add('hide');
-    }
-  }, {
     key: 'start',
     value: function start() {
       this.cleanup();
       this.hideModals();
 
       this.snake = new _snake2.default(new _point2.default(200, 200));
-      this.walls = this.spawnWalls();
       this.food = this.spawnFood();
 
       if (this.intervalId == null) {
         this.intervalId = setInterval(this.onTick.bind(this), 20);
       }
-
-      window.onresize = this.onResize.bind(this);
     }
   }, {
     key: 'end',
@@ -1120,7 +1115,7 @@ var SnakeGame = function () {
         return;
       }
 
-      this.snake.nodes.concat(this.walls).concat(this.food).forEach(function (gameObject) {
+      this.snake.nodes.concat(this.food).forEach(function (gameObject) {
         gameObject.destroy();
       });
     }
@@ -1134,9 +1129,9 @@ var SnakeGame = function () {
   }, {
     key: 'spawnFood',
     value: function spawnFood() {
-      var randX = Math.random() * window.innerWidth - 40;
-      var randY = Math.random() * window.innerHeight - 40;
-      var randomPoint = new _point2.default(randX + 20, randY + 20);
+      var randX = Math.floor(Math.random() * (window.innerWidth - 30));
+      var randY = Math.floor(Math.random() * (window.innerHeight - 30));
+      var randomPoint = new _point2.default(randX + 10, randY + 10);
 
       return new _food2.default({ position: randomPoint });
     }
@@ -1175,6 +1170,22 @@ var SnakeGame = function () {
       return _collisions2.default.aabb(this.snake.head(), this.food);
     }
   }, {
+    key: 'showModal',
+    value: function showModal(element) {
+      element.classList.remove('hide');
+    }
+  }, {
+    key: 'hideModals',
+    value: function hideModals(element) {
+      this.introElement.classList.add('hide');
+      this.gameOverElement.classList.add('hide');
+    }
+
+    // --------------
+    // Event Handlers
+    // --------------
+
+  }, {
     key: 'onTick',
     value: function onTick() {
       this.snake.forward();
@@ -1191,15 +1202,11 @@ var SnakeGame = function () {
         return;
       }
 
-      var newDirection = _directions.KEYCODES[e.keyCode];
-      var oppositeDirection = _directions.OPPOSITE_DIRECTIONS[this.snake.direction];
+      var direction = _directions.KEYCODES[e.keyCode];
+      var opposite = _directions.OPPOSITE_DIRECTIONS[this.snake.direction];
 
-      if (newDirection === oppositeDirection) {
-        return;
-      }
-
-      if (newDirection) {
-        this.snake.direction = newDirection;
+      if (direction && direction !== opposite) {
+        this.snake.direction = direction;
       }
     }
   }, {
@@ -1349,7 +1356,7 @@ var Snake = function () {
     value: function nextPosition() {
       var newPosition = (0, _assign2.default)(new _point2.default(), this.head().position);
 
-      // TODO: Cane we make this smaller?
+      // TODO: Can we make this smaller?
       switch (this.direction) {
         case _directions.NORTH:
           newPosition.y -= this.velocity;
@@ -1536,7 +1543,7 @@ var SnakeNode = function (_GameObject) {
     var defaults = {
       width: 4,
       height: 4,
-      backgroundColor: "black"
+      backgroundColor: "rgba(50, 50, 50, 1)"
     };
 
     return (0, _possibleConstructorReturn3.default)(this, (SnakeNode.__proto__ || (0, _getPrototypeOf2.default)(SnakeNode)).call(this, (0, _assign2.default)({}, defaults, options)));
@@ -2298,7 +2305,7 @@ var Wall = function (_GameObject) {
 
     var wallThickness = 10;
     var options = {
-      backgroundColor: "red"
+      backgroundColor: "rgba(50, 50, 50, 1)"
 
       // TODO: Can we make this smaller?
     };switch (direction) {
@@ -2373,6 +2380,8 @@ var _point2 = _interopRequireDefault(_point);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// TODO: DONE
+
 var Food = function (_GameObject) {
   (0, _inherits3.default)(Food, _GameObject);
 
@@ -2384,7 +2393,7 @@ var Food = function (_GameObject) {
       position: new _point2.default(0, 0),
       width: 10,
       height: 10,
-      backgroundColor: "purple"
+      backgroundColor: "rgba(126, 5, 126, 1)"
     };
 
     return (0, _possibleConstructorReturn3.default)(this, (Food.__proto__ || (0, _getPrototypeOf2.default)(Food)).call(this, (0, _assign2.default)({}, defaults, options)));
@@ -2415,6 +2424,8 @@ var _createClass2 = __webpack_require__(14);
 var _createClass3 = _interopRequireDefault(_createClass2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// TODO: DONE.
 
 var Collision = function () {
   function Collision() {

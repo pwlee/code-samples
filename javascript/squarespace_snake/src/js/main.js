@@ -1,4 +1,8 @@
 import SnakeGame from './snake-game'
 
+// Include entry point for styles for Webpack
 const styles = require('../css/main.scss')
-const game = new SnakeGame()
+
+document.addEventListener("DOMContentLoaded", () => {
+  const game = new SnakeGame()
+})

@@ -52,7 +52,7 @@ export default class Snake {
   nextPosition() {
     const newPosition = Object.assign(new Point(), this.head().position)
 
-    // TODO: Cane we make this smaller?
+    // TODO: Can we make this smaller?
     switch (this.direction) {
       case NORTH:
         newPosition.y -= this.velocity

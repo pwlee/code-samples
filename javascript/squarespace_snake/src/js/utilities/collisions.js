@@ -1,3 +1,5 @@
+// TODO: DONE.
+
 export default class Collision {
   // Axis-Aligned Bounding Box
   // Simple collision detection between two rectangles (does not account for rotation)

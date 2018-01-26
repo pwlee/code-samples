@@ -1,3 +1,5 @@
+// TODO: DONE
+
 import Point from './utilities/point'
 
 export default class GameObject {

@@ -8,22 +8,14 @@ import { NORTH, EAST, SOUTH, WEST, KEYCODES, OPPOSITE_DIRECTIONS } from './utili
 export default class SnakeGame {
   constructor() {
     this.snake = null
-    this.walls = null
     this.food = null
     this.intervalId = null
+    this.walls = this.spawnWalls()
     this.introElement = document.getElementById('intro')
     this.gameOverElement = document.getElementById('game-over')
 
     document.onkeydown = this.onKeyDown.bind(this)
-  }
-
-  showModal(element) {
-    element.classList.remove('hide')
-  }
-
-  hideModals(element) {
-    this.introElement.classList.add('hide')
-    this.gameOverElement.classList.add('hide')
+    window.onresize = this.onResize.bind(this)
   }
 
   start() {
@@ -31,14 +23,11 @@ export default class SnakeGame {
     this.hideModals()
 
     this.snake = new Snake(new Point(200, 200))
-    this.walls = this.spawnWalls()
     this.food = this.spawnFood()
 
     if (this.intervalId == null) {
       this.intervalId = setInterval(this.onTick.bind(this), 20)
     }
-
-    window.onresize = this.onResize.bind(this)
   }
 
   end() {
@@ -52,7 +41,7 @@ export default class SnakeGame {
       return
     }
 
-    this.snake.nodes.concat(this.walls).concat(this.food).forEach((gameObject) => {
+    this.snake.nodes.concat(this.food).forEach((gameObject) => {
       gameObject.destroy()
     })
   }
@@ -64,11 +53,11 @@ export default class SnakeGame {
   }
 
   spawnFood() {
-    const randX = Math.random() * window.innerWidth - 40
-    const randY = Math.random() * window.innerHeight - 40
-    const randomPoint = new Point(randX + 20, randY + 20)
+    const randX = Math.floor(Math.random() * (window.innerWidth - 30))
+    const randY = Math.floor(Math.random() * (window.innerHeight - 30))
+    const randomPoint = new Point(randX + 10, randY + 10)
 
-    return new Food({ position: randomPoint })
+    return new Food({position: randomPoint})
   }
 
   eatFood() {
@@ -99,6 +88,18 @@ export default class SnakeGame {
     return Collision.aabb(this.snake.head(), this.food)
   }
 
+  showModal(element) {
+    element.classList.remove('hide')
+  }
+
+  hideModals(element) {
+    this.introElement.classList.add('hide')
+    this.gameOverElement.classList.add('hide')
+  }
+
+  // --------------
+  // Event Handlers
+  // --------------
   onTick() {
     this.snake.forward()
     this.checkForCollision()
@@ -113,15 +114,11 @@ export default class SnakeGame {
       return
     }
 
-    const newDirection = KEYCODES[e.keyCode]
-    const oppositeDirection = OPPOSITE_DIRECTIONS[this.snake.direction]
+    const direction = KEYCODES[e.keyCode]
+    const opposite = OPPOSITE_DIRECTIONS[this.snake.direction]
 
-    if (newDirection === oppositeDirection) {
-      return
-    }
-
-    if (newDirection) {
-      this.snake.direction = newDirection
+    if (direction && direction !== opposite) {
+      this.snake.direction = direction
     }
   }
 

@@ -6,7 +6,7 @@ export default class SnakeNode extends GameObject {
     const defaults = {
       width: 4,
       height: 4,
-      backgroundColor: "black"
+      backgroundColor: "rgba(50, 50, 50, 1)"
     }
 
     super(Object.assign({}, defaults, options))

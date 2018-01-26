@@ -6,7 +6,7 @@ export default class Wall extends GameObject {
   constructor(direction) {
     const wallThickness = 10
     const options = {
-      backgroundColor: "red"
+      backgroundColor: "rgba(50, 50, 50, 1)"
     }
 
     // TODO: Can we make this smaller?
