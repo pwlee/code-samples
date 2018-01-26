@@ -684,7 +684,7 @@ var GameObject = function () {
     this.position = options.position || new _point2.default(0, 0);
     this.width = options.width || 10;
     this.height = options.height || 10;
-    this.backgroundColor = options.backgroundColor || '#000';
+    this.backgroundColor = options.backgroundColor || 'rgba(0,0,0,1)';
   }
 
   (0, _createClass3.default)(GameObject, [{
@@ -1060,11 +1060,10 @@ var SnakeGame = function () {
     this.snake = null;
     this.food = null;
     this.intervalId = null;
-    this.walls = this.spawnWalls();
+    this.walls = this.createWalls();
     this.canvas = document.getElementById('game-frame');
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
-    this.introElement = document.getElementById('intro');
     this.gameOverElement = document.getElementById('game-over');
 
     document.onkeydown = this.onKeyDown.bind(this);
@@ -1075,9 +1074,8 @@ var SnakeGame = function () {
     key: 'start',
     value: function start() {
       this.hideModals();
-
       this.snake = new _snake2.default(new _point2.default(200, 200));
-      this.food = this.spawnFood();
+      this.food = this.createFood();
 
       if (this.intervalId == null) {
         this.intervalId = setInterval(this.onTick.bind(this), 20);
@@ -1086,20 +1084,20 @@ var SnakeGame = function () {
   }, {
     key: 'end',
     value: function end() {
-      this.showModal(this.gameOverElement);
+      document.getElementById('game-over').classList.remove('hide');
       clearInterval(this.intervalId);
       this.intervalId = null;
     }
   }, {
-    key: 'spawnWalls',
-    value: function spawnWalls() {
+    key: 'createWalls',
+    value: function createWalls() {
       return [_directions.NORTH, _directions.EAST, _directions.SOUTH, _directions.WEST].map(function (direction) {
         return new _wall2.default(direction);
       });
     }
   }, {
-    key: 'spawnFood',
-    value: function spawnFood() {
+    key: 'createFood',
+    value: function createFood() {
       var randX = Math.floor(Math.random() * (window.innerWidth - 30));
       var randY = Math.floor(Math.random() * (window.innerHeight - 30));
       var randomPoint = new _point2.default(randX + 10, randY + 10);
@@ -1113,8 +1111,9 @@ var SnakeGame = function () {
         this.end();
       }
 
-      if (this.ateFood()) {
-        this.food = this.spawnFood();
+      var collidedWithfood = _collisions2.default.aabb(this.snake.head(), this.food);
+      if (collidedWithfood) {
+        this.food = this.createFood();
         this.snake.grow();
       }
     }
@@ -1130,20 +1129,10 @@ var SnakeGame = function () {
       });
     }
   }, {
-    key: 'ateFood',
-    value: function ateFood() {
-      return _collisions2.default.aabb(this.snake.head(), this.food);
-    }
-  }, {
-    key: 'showModal',
-    value: function showModal(element) {
-      element.classList.remove('hide');
-    }
-  }, {
     key: 'hideModals',
     value: function hideModals(element) {
-      this.introElement.classList.add('hide');
-      this.gameOverElement.classList.add('hide');
+      document.getElementById('intro').classList.add('hide');
+      document.getElementById('game-over').classList.add('hide');
     }
   }, {
     key: 'render',
@@ -1189,10 +1178,10 @@ var SnakeGame = function () {
   }, {
     key: 'onResize',
     value: function onResize() {
-      this.walls = this.spawnWalls();
-
+      this.walls = this.createWalls();
       this.canvas.width = window.innerWidth;
       this.canvas.height = window.innerHeight;
+      this.render();
     }
   }]);
   return SnakeGame;
@@ -1273,16 +1262,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Snake = function () {
   function Snake(startPoint) {
-    var snakeLength = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 20;
+    var _this = this;
+
+    var startSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 20;
     (0, _classCallCheck3.default)(this, Snake);
 
     this.nodes = [new _snakeNode2.default({ position: startPoint })];
     this.velocity = 4; // pixels per tick
     this.direction = _directions.EAST;
 
-    for (var i = 0; i < snakeLength - 1; i++) {
-      this.grow();
-    }
+    Array(startSize).fill(0).forEach(function (i) {
+      _this.grow();
+    });
   }
 
   (0, _createClass3.default)(Snake, [{
@@ -1301,16 +1292,19 @@ var Snake = function () {
       return this.nodes[this.nodes.length - 1];
     }
   }, {
+    key: 'render',
+    value: function render(canvas) {
+      this.nodes.forEach(function (node) {
+        node.render(canvas);
+      });
+    }
+  }, {
     key: 'forward',
     value: function forward() {
-      // Given a snake with nodes which are positioned like:
-      //       [b][a]->
-      // [e][d][c]
-      //
-      // We can move one 'step' forward by simply moving
-      // the last node to the front.
-      //       [b][a][e]->
-      //    [d][c]
+      // We can move one 'step' forward by simply
+      // moving the last node to the front. Ex:
+      //       [b][a]->  ||     [b][a][e]->
+      // [e][d][c]       ||  [d][c]
       var nextPosition = this.nextPosition();
 
       this.nodes.unshift(this.nodes.pop());
@@ -1348,13 +1342,6 @@ var Snake = function () {
       }
 
       return newPosition;
-    }
-  }, {
-    key: 'render',
-    value: function render(canvas) {
-      this.nodes.forEach(function (node) {
-        node.render(canvas);
-      });
     }
   }]);
   return Snake;

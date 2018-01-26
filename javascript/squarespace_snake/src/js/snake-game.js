@@ -10,11 +10,10 @@ export default class SnakeGame {
     this.snake = null
     this.food = null
     this.intervalId = null
-    this.walls = this.spawnWalls()
+    this.walls = this.createWalls()
     this.canvas = document.getElementById('game-frame')
     this.canvas.width = window.innerWidth
     this.canvas.height = window.innerHeight
-    this.introElement = document.getElementById('intro')
     this.gameOverElement = document.getElementById('game-over')
 
     document.onkeydown = this.onKeyDown.bind(this)
@@ -23,9 +22,8 @@ export default class SnakeGame {
 
   start() {
     this.hideModals()
-
     this.snake = new Snake(new Point(200, 200))
-    this.food = this.spawnFood()
+    this.food = this.createFood()
 
     if (this.intervalId == null) {
       this.intervalId = setInterval(this.onTick.bind(this), 20)
@@ -33,18 +31,18 @@ export default class SnakeGame {
   }
 
   end() {
-    this.showModal(this.gameOverElement)
+    document.getElementById('game-over').classList.remove('hide')
     clearInterval(this.intervalId)
     this.intervalId = null
   }
 
-  spawnWalls() {
+  createWalls() {
     return [NORTH, EAST, SOUTH, WEST].map((direction) => {
       return new Wall(direction)
     })
   }
 
-  spawnFood() {
+  createFood() {
     const randX = Math.floor(Math.random() * (window.innerWidth - 30))
     const randY = Math.floor(Math.random() * (window.innerHeight - 30))
     const randomPoint = new Point(randX + 10, randY + 10)
@@ -57,8 +55,9 @@ export default class SnakeGame {
       this.end()
     }
 
-    if (this.ateFood()) {
-      this.food = this.spawnFood()
+    const collidedWithfood = Collision.aabb(this.snake.head(), this.food)
+    if (collidedWithfood) {
+      this.food = this.createFood()
       this.snake.grow()
     }
   }
@@ -71,17 +70,9 @@ export default class SnakeGame {
     })
   }
 
-  ateFood() {
-    return Collision.aabb(this.snake.head(), this.food)
-  }
-
-  showModal(element) {
-    element.classList.remove('hide')
-  }
-
   hideModals(element) {
-    this.introElement.classList.add('hide')
-    this.gameOverElement.classList.add('hide')
+    document.getElementById('intro').classList.add('hide')
+    document.getElementById('game-over').classList.add('hide')
   }
 
   render() {
@@ -119,9 +110,9 @@ export default class SnakeGame {
   }
 
   onResize() {
-    this.walls = this.spawnWalls()
-
+    this.walls = this.createWalls()
     this.canvas.width = window.innerWidth
     this.canvas.height = window.innerHeight
+    this.render()
   }
 }

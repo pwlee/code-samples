@@ -7,7 +7,7 @@ export default class GameObject {
     this.position = options.position || new Point(0, 0)
     this.width = options.width || 10
     this.height = options.height || 10
-    this.backgroundColor = options.backgroundColor || '#000'
+    this.backgroundColor = options.backgroundColor || 'rgba(0,0,0,1)'
   }
 
   render(canvas) {

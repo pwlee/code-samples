@@ -5,14 +5,12 @@ import Point from './utilities/point'
 import { NORTH, EAST, SOUTH, WEST } from './utilities/directions'
 
 export default class Snake {
-  constructor(startPoint, snakeLength = 20) {
+  constructor(startPoint, startSize = 20) {
     this.nodes = [new SnakeNode({position: startPoint})]
     this.velocity = 4 // pixels per tick
     this.direction = EAST
 
-    for (let i = 0; i < snakeLength - 1; i++) {
-      this.grow()
-    }
+    Array(startSize).fill(0).forEach((i) => { this.grow() })
   }
 
   head() {
@@ -27,15 +25,17 @@ export default class Snake {
     return this.nodes[this.nodes.length - 1]
   }
 
+  render(canvas) {
+    this.nodes.forEach((node) => {
+      node.render(canvas)
+    })
+  }
+
   forward() {
-    // Given a snake with nodes which are positioned like:
-    //       [b][a]->
-    // [e][d][c]
-    //
-    // We can move one 'step' forward by simply moving
-    // the last node to the front.
-    //       [b][a][e]->
-    //    [d][c]
+    // We can move one 'step' forward by simply
+    // moving the last node to the front. Ex:
+    //       [b][a]->  ||     [b][a][e]->
+    // [e][d][c]       ||  [d][c]
     const nextPosition = this.nextPosition()
 
     this.nodes.unshift(this.nodes.pop())
@@ -69,11 +69,5 @@ export default class Snake {
     }
 
     return newPosition
-  }
-
-  render(canvas) {
-    this.nodes.forEach((node) => {
-      node.render(canvas)
-    })
   }
 }
