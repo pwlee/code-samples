@@ -64,9 +64,9 @@ export default class SnakeGame {
   }
 
   spawnFood() {
-    const randX = Math.random() * window.innerWidth - 20
-    const randY = Math.random() * window.innerHeight - 20
-    const randomPoint = new Point(randX + 10, randY + 10)
+    const randX = Math.random() * window.innerWidth - 40
+    const randY = Math.random() * window.innerHeight - 40
+    const randomPoint = new Point(randX + 20, randY + 20)
 
     return new Food({ position: randomPoint })
   }

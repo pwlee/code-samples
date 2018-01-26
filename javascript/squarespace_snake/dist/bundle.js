@@ -1134,9 +1134,9 @@ var SnakeGame = function () {
   }, {
     key: 'spawnFood',
     value: function spawnFood() {
-      var randX = Math.random() * window.innerWidth - 20;
-      var randY = Math.random() * window.innerHeight - 20;
-      var randomPoint = new _point2.default(randX + 10, randY + 10);
+      var randX = Math.random() * window.innerWidth - 40;
+      var randY = Math.random() * window.innerHeight - 40;
+      var randomPoint = new _point2.default(randX + 20, randY + 20);
 
       return new _food2.default({ position: randomPoint });
     }
