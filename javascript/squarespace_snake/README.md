@@ -28,11 +28,13 @@ This project uses webpack to bundle ES6 and Sass CSS modules. Babel is also used
 This project is designed using fairly standard object-oriented principles. Some notable decisions include:
 
 - Rendering is done through the canvas because, generally, it renders much faster than the DOM.
+
 - The main renderable elements in the game (snake-node, walls, food) all inherit from the GameObject class. This GameObject class contains a basic render function which can be overwritten by child classes if more complex rendering is required (multiple paths/shapes, images, ..etc.).
+
 - To keep things small and simple, method privacy is not enforced. Instead, private methods are prefixed with an underscore to denote that they should only be accessed privately.
 
 ### Next Steps
 
 - When drawing each frame the canvas is completely cleared and then redrawn. Since most of the actual canvas doesn't change (the walls, for instance, don't move at all), this is pretty inefficient. I would love to optimize the rendering logic by only clearing/rendering what needs to be updated.
 
-- Although not entirely needed, using two-phase collision detection would improve performance substantially if the game had more (much more) collidable objects. Two-phase collision detection can quickly rule out objects that are too far to collide, thus dramatically reducing the number of collision pairs to check against.
+- Although not entirely needed, using two-phase collision detection would improve performance substantially if the game had more (many, many more) collidable objects. Two-phase collision detection can quickly rule out objects that are too far to collide, thus dramatically reducing the number of collision pairs to check against.
