@@ -12,9 +12,9 @@ export default class GameObject {
   // -----------------------  Public  -------------------------
   // ----------------------------------------------------------
   render(canvas) {
-    const ctx = canvas.getContext('2d')
+    const context = canvas.getContext('2d')
 
-    ctx.fillStyle = this.backgroundColor
-    ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
+    context.fillStyle = this.backgroundColor
+    context.fillRect(this.position.x, this.position.y, this.width, this.height)
   }
 }

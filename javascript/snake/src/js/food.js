@@ -7,7 +7,7 @@ export default class Food extends GameObject {
       position: new Point(0, 0),
       width: 10,
       height: 10,
-      backgroundColor: "rgba(126, 5, 126, 1)"
+      backgroundColor: "rgba(91, 107, 153, 1)"
     }
 
     super(Object.assign({}, defaults, options))

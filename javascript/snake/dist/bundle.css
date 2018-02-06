@@ -1,30 +1,27 @@
-html, body, #game-frame {
+html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%; }
 
-body {
-  background-color: rgba(155, 195, 39, 0.5); }
-
-#game-frame {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1; }
-
-.modal {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.75);
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; }
-
-.hide {
-  display: none; }
+html body {
+  background-color: rgba(212, 212, 212, 0.5); }
+  html body #game-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; }
+  html body .modal {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.75);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; }
+  html body .hide {
+    display: none; }

@@ -693,10 +693,10 @@ var GameObject = function () {
   (0, _createClass3.default)(GameObject, [{
     key: 'render',
     value: function render(canvas) {
-      var ctx = canvas.getContext('2d');
+      var context = canvas.getContext('2d');
 
-      ctx.fillStyle = this.backgroundColor;
-      ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+      context.fillStyle = this.backgroundColor;
+      context.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
   }]);
   return GameObject;
@@ -1159,8 +1159,8 @@ var SnakeGame = function () {
     value: function _render() {
       var _this2 = this;
 
-      var ctx = this.canvas.getContext('2d');
-      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      var context = this.canvas.getContext('2d');
+      context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
       var renderables = this.walls.concat([this.snake, this.food]);
       renderables.forEach(function (gameObject) {
@@ -2383,7 +2383,7 @@ var Food = function (_GameObject) {
       position: new _point2.default(0, 0),
       width: 10,
       height: 10,
-      backgroundColor: "rgba(126, 5, 126, 1)"
+      backgroundColor: "rgba(91, 107, 153, 1)"
     };
 
     return (0, _possibleConstructorReturn3.default)(this, (Food.__proto__ || (0, _getPrototypeOf2.default)(Food)).call(this, (0, _assign2.default)({}, defaults, options)));
