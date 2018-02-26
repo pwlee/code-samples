@@ -86,7 +86,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var styles = __webpack_require__(27);
 
 document.addEventListener('DOMContentLoaded', function () {
-  var imageUrl = 'https://bonobos-prod-s3.imgix.net/products/7849/original/SHIRT_Casual_EndOnEnd_Blue_hero1.jpg?h=500&w=500';
+  var imageUrl = 'https://bonobos-prod-s3.imgix.net/products/7849/original/SHIRT_Casual_EndOnEnd_Blue_hero1.jpg?h=3000&w=3000';
 
   (0, _reactDom.render)(_react2.default.createElement(_panZoom2.default, { imageUrl: imageUrl }), document.querySelector('.product > .image'));
 });
@@ -20075,7 +20075,7 @@ var Zoom = function (_React$Component) {
         _react2.default.createElement(
           'div',
           {
-            className: 'zoom-content',
+            className: 'zoom-content' + (this.isZoomedIn() ? ' zoomed-in' : ''),
             onClick: this.toggleZoom.bind(this),
             style: this.zoomStyles() },
           this.props.children
@@ -20267,7 +20267,7 @@ var Pan = function (_React$Component) {
         return;
       }
 
-      // Calculate how far the mouse has moven from the initial click/touch point
+      // Calculate how far the mouse has moved from the initial click/touch point
       var xDifference = mouseEvent.screenX - this.state.panStartX;
       var yDifference = mouseEvent.screenY - this.state.panStartY;
 

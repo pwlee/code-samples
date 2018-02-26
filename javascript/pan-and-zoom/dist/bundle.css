@@ -13,6 +13,10 @@ p {
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Merriweather', serif; }
 
+small {
+  display: inline-block;
+  margin: 10px 0; }
+
 html, body {
   background-color: #f4f4f4; }
 
@@ -78,12 +82,14 @@ html body nav {
 .pan-container .pan-content img {
   max-width: 100%;
   max-height: 100%;
-  cursor: pointer;
   user-select: none;
   touch-action: none; }
 
 .zoom-container .zoom-content {
-  transition: transform 200ms; }
+  transition: transform 200ms;
+  cursor: zoom-in; }
+  .zoom-container .zoom-content.zoomed-in {
+    cursor: pointer; }
 
 .zoom-container .zoom-in, .zoom-container .zoom-out {
   position: absolute;

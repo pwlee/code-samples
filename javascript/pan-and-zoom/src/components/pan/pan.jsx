@@ -77,7 +77,7 @@ export default class Pan extends React.Component {
       return
     }
 
-    // Calculate how far the mouse has moven from the initial click/touch point
+    // Calculate how far the mouse has moved from the initial click/touch point
     const xDifference = mouseEvent.screenX - this.state.panStartX
     const yDifference = mouseEvent.screenY - this.state.panStartY
 

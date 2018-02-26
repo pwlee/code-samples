@@ -1,6 +1,11 @@
 .zoom-container {
   .zoom-content {
     transition: transform 200ms;
+    cursor: zoom-in;
+
+    &.zoomed-in {
+      cursor: pointer;
+    }
   }
 
   .zoom-in, .zoom-out {

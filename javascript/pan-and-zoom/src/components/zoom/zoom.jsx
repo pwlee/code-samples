@@ -14,7 +14,7 @@ export default class Zoom extends React.Component {
     return (
       <div className='zoom-container'>
         <div
-          className='zoom-content'
+          className={'zoom-content' + (this.isZoomedIn() ? ' zoomed-in' : '')}
           onClick={ this.toggleZoom.bind(this) }
           style={ this.zoomStyles() }>
           { this.props.children }

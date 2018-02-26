@@ -1,40 +1,30 @@
-# Snake!
+# Pan and Zoom
 
 ## How to Run
 
-There are two ways to play Snake!:
+There are two ways to run the demo:
 
-1. [Play the game here](https://peterwlee.com/snake/index.html)
-2. A pre-built version of the game is located in the `./dist/` directory. Load `./dist/index.html` into a web browser (Chrome is preferred).
-
-## How to Play
-
-1. Arrow keys to move
-2. Spacebar to start/restart
-3. Eat food
-4. Avoid walls and your long, snaky body
+1. [See it here](https://peterwlee.com/pan-and-zoom/index.html)
+2. A pre-built version of the demo is located in the `./dist/` directory. Load `./dist/index.html` into a web browser.
 
 ## Build Instructions
 
-This project uses webpack to bundle ES6 and Sass CSS modules. Babel is also used to transpile ES6 to ES2015. To build the project run:
+This project uses Webpack to bundle React components (written in ES6) and Sass CSS modules. Babel is also used to transpile ES6 to ES2015. To build the project run:
 
-1. `$ npm install`
-2. `$ npm run build`
+1. [Download and install Node.js + npm (if you don't have it already)](https://nodejs.org/en/)
+2. `$ npm install`
+3. `$ npm run build`
 
 ## Design Walkthrough & Next Steps
 
 ### Design Walkthrough
 
-This project is designed using fairly standard object-oriented principles. Some notable decisions include:
+Pan and zoom functionality is provided by the PanZoom component. The PanZoom component is comprised of two smaller components: the Pan component and the Zoom component. Both of these components can operate independently. The Zoom component, for example, does not require the Pan component to do its job. However, the components can also be combined to apply both transformations on top of one another.
 
-- Rendering is done through the canvas because, generally, it renders much faster than the DOM.
-
-- The main renderable elements in the game (snake-node, walls, food) all inherit from the GameObject class. This GameObject class contains a basic render function which can be overwritten by child classes if more complex rendering is required (multiple paths/shapes, images, ..etc.).
-
-- To keep things small and simple, method privacy is not enforced. Instead, private methods are prefixed with an underscore to denote that they should only be accessed privately.
+Panning and zooming are accomplished by applying the `transform` style rule with the appropriate function. Zooming uses the `scale` function, panning uses the `translate` function, and in theory, it should be easy enough to add support for `rotate` and `skew`.
 
 ### Next Steps
 
-- When drawing each frame the canvas is completely cleared and then redrawn. Since most of the actual canvas doesn't change (the walls, for instance, don't move at all), this is pretty inefficient. I would love to optimize the rendering logic by only clearing/rendering what needs to be updated.
+The PanZoom component uses one high resolution image for everything. In it's initial state, depending on the device resolution, there's no need to load a 2000px x 2000px image. Instead, we should be providing images of appropriate size when user needs it. More specifically, we should load a small preview image on page load, inspect the display resolution, and then lazy load the high resolution version so that way the user doesn't have to wait when they try and zoom in.
 
-- Although not entirely needed, using two-phase collision detection would improve performance substantially if the game had more (many, many more) collidable objects. Two-phase collision detection can quickly rule out objects that are too far to collide, thus dramatically reducing the number of collision pairs to check against.
+And, as previously mentioned, support for `rotate` and `skew` would be an interesting exercise.
