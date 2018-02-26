@@ -15,7 +15,7 @@ export default class Pan extends React.Component {
       panStartY: 0,          // we can determine how far the mouse/finger has moved
 
       translateX: 0,         // Final computed translation based on: cumulativeOffset,
-      translateY: 0          // panStart, and current mouse position
+      translateY: 0          // panStart, and current mouse/finger position
     }
   }
 

@@ -1837,8 +1837,9 @@ var styles = __webpack_require__(118);
 
 document.addEventListener('DOMContentLoaded', function () {
   var imageUrl = 'https://bonobos-prod-s3.imgix.net/products/7849/original/SHIRT_Casual_EndOnEnd_Blue_hero1.jpg?h=3000&w=3000';
+  var imageElement = document.querySelector('.product > .image');
 
-  (0, _reactDom.render)(_react2.default.createElement(_panZoom2.default, { imageUrl: imageUrl }), document.querySelector('.product > .image'));
+  (0, _reactDom.render)(_react2.default.createElement(_panZoom2.default, { imageUrl: imageUrl }), imageElement);
 });
 
 /***/ }),
@@ -20134,7 +20135,7 @@ var Pan = function (_React$Component) {
       panStartY: 0, // we can determine how far the mouse/finger has moved
 
       translateX: 0, // Final computed translation based on: cumulativeOffset,
-      translateY: 0 // panStart, and current mouse position
+      translateY: 0 // panStart, and current mouse/finger position
     };
     return _this;
   }
