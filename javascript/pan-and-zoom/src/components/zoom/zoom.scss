@@ -1,0 +1,27 @@
+// Zoomer component
+.zoom-container {
+  .zoom-content {
+    transition: transform 200ms;
+  }
+
+  .zoom-in, .zoom-out {
+    position: absolute;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+
+    &.disabled {
+      fill: $light-gray;
+      stroke: $light-gray;
+    }
+  }
+
+  .zoom-in {
+    top: 20px;
+  }
+
+  .zoom-out {
+    top: 50px;
+  }
+}

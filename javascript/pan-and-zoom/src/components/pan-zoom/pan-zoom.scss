@@ -1,0 +1,13 @@
+.pan-zoom-container {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  &.top-aligned {
+    align-items: flex-start;
+    justify-content: center;
+  }
+}

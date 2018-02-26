@@ -1,0 +1,59 @@
+html {
+  body {
+    header {
+      position: sticky;
+      top: 0px;
+      height: 30px;
+      padding: 15px;
+      z-index: 3;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+      box-shadow: 0 3px 3px rgba(0,0,0,.10);
+    }
+
+    @media (min-width: 1000px) {
+      .application-layout {
+        display: flex;
+        flex-direction: row;
+
+        nav {
+          position: sticky;
+          top: 60px;
+          padding: 15px;
+          z-index: 2;
+          background-color: #fff;
+          height: calc(100vh - 90px);
+          width: 170px;
+          border-right: 1px solid #ddd;
+          box-shadow: 5px 0 5px -3px rgba(0,0,0,.15);
+          flex-shrink: 0;
+        }
+
+        .product {
+          display: flex;
+          flex-direction: row;
+          width: calc(100vw - 200px);
+
+          .image {
+            width: 60%;
+            flex-shrink: 0;
+            background-color: #fff;
+            position: sticky;
+            height: calc(100vh - 60px);
+            top: 60px;
+            position: sticky;
+          }
+
+          .description {
+            width: 40%;
+            flex-shrink: 0;
+
+            .content {
+              padding: 30px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

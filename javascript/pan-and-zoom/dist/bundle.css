@@ -1,0 +1,89 @@
+html, body {
+  background-color: #efefef; }
+
+* {
+  margin: 0;
+  padding: 0; }
+
+p {
+  margin-bottom: 20px; }
+
+html body header {
+  position: sticky;
+  top: 0px;
+  height: 30px;
+  padding: 15px;
+  z-index: 3;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1); }
+
+@media (min-width: 1000px) {
+  html body .application-layout {
+    display: flex;
+    flex-direction: row; }
+    html body .application-layout nav {
+      position: sticky;
+      top: 60px;
+      padding: 15px;
+      z-index: 2;
+      background-color: #fff;
+      height: calc(100vh - 90px);
+      width: 170px;
+      border-right: 1px solid #ddd;
+      box-shadow: 5px 0 5px -3px rgba(0, 0, 0, 0.15);
+      flex-shrink: 0; }
+    html body .application-layout .product {
+      display: flex;
+      flex-direction: row;
+      width: calc(100vw - 200px); }
+      html body .application-layout .product .image {
+        width: 60%;
+        flex-shrink: 0;
+        background-color: #fff;
+        position: sticky;
+        height: calc(100vh - 60px);
+        top: 60px;
+        position: sticky; }
+      html body .application-layout .product .description {
+        width: 40%;
+        flex-shrink: 0; }
+        html body .application-layout .product .description .content {
+          padding: 30px; } }
+
+.pan-zoom-container {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center; }
+  .pan-zoom-container.top-aligned {
+    align-items: flex-start;
+    justify-content: center; }
+
+.pan-container .pan-content img {
+  max-width: 100%;
+  max-height: 100%;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none; }
+
+.zoom-container .zoom-content {
+  transition: transform 200ms; }
+
+.zoom-container .zoom-in, .zoom-container .zoom-out {
+  position: absolute;
+  right: 20px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer; }
+  .zoom-container .zoom-in.disabled, .zoom-container .zoom-out.disabled {
+    fill: #c9c9c9;
+    stroke: #c9c9c9; }
+
+.zoom-container .zoom-in {
+  top: 20px; }
+
+.zoom-container .zoom-out {
+  top: 50px; }
