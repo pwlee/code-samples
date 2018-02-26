@@ -7,7 +7,6 @@ export default class Pan extends React.Component {
     this.state = {
       enabled: false,
       panning: false,
-
       cumulativeOffsetX: 0,  // Keep track of cumulative offsets as a user
       cumulativeOffsetY: 0,  // pans multiple times through the zoomed image
 
@@ -76,6 +75,8 @@ export default class Pan extends React.Component {
     if (!this.isPanning()) {
       return
     }
+
+    this.props.disableZoomToggle()
 
     // Calculate how far the mouse has moved from the initial click/touch point
     const xDifference = mouseEvent.screenX - this.state.panStartX

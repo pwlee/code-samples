@@ -19217,7 +19217,10 @@ var PanZoom = function (_React$Component) {
             onZoomOut: this.onZoomOut.bind(this) },
           _react2.default.createElement(
             _pan2.default,
-            { ref: 'pan', currentZoom: this.currentZoom.bind(this) },
+            {
+              ref: 'pan',
+              currentZoom: this.currentZoom.bind(this),
+              disableZoomToggle: this.disableZoomToggle.bind(this) },
             _react2.default.createElement('img', {
               ref: 'mainImage',
               src: this.props.imageUrl,
@@ -19231,6 +19234,11 @@ var PanZoom = function (_React$Component) {
     key: 'currentZoom',
     value: function currentZoom() {
       return this.refs.zoom.getZoomFactor();
+    }
+  }, {
+    key: 'disableZoomToggle',
+    value: function disableZoomToggle() {
+      return this.refs.zoom.disableToggle();
     }
   }, {
     key: 'onZoomIn',
@@ -20127,7 +20135,6 @@ var Pan = function (_React$Component) {
     _this.state = {
       enabled: false,
       panning: false,
-
       cumulativeOffsetX: 0, // Keep track of cumulative offsets as a user
       cumulativeOffsetY: 0, // pans multiple times through the zoomed image
 
@@ -20207,6 +20214,8 @@ var Pan = function (_React$Component) {
       if (!this.isPanning()) {
         return;
       }
+
+      this.props.disableZoomToggle();
 
       // Calculate how far the mouse has moved from the initial click/touch point
       var xDifference = mouseEvent.screenX - this.state.panStartX;
@@ -20309,7 +20318,10 @@ var Zoom = function (_React$Component) {
 
     var _this = (0, _possibleConstructorReturn3.default)(this, (Zoom.__proto__ || (0, _getPrototypeOf2.default)(Zoom)).call(this, props));
 
-    _this.state = { zoom: 1 };
+    _this.state = {
+      zoom: 1,
+      canToggle: true
+    };
     return _this;
   }
 
@@ -20322,7 +20334,7 @@ var Zoom = function (_React$Component) {
         _react2.default.createElement(
           'div',
           {
-            className: 'zoom-content' + (this.isZoomedIn() ? ' zoomed-in' : ''),
+            className: this.classNames(),
             onClick: this.toggleZoom.bind(this),
             style: this.zoomStyles() },
           this.props.children
@@ -20339,6 +20351,11 @@ var Zoom = function (_React$Component) {
   }, {
     key: 'toggleZoom',
     value: function toggleZoom(mouseEvent) {
+      if (!this.canToggle()) {
+        this.enableToggle();
+        return;
+      }
+
       if (this.isZoomedIn()) {
         this.zoomOut();
       } else {
@@ -20371,6 +20388,26 @@ var Zoom = function (_React$Component) {
     key: 'isZoomedIn',
     value: function isZoomedIn() {
       return this.state.zoom > 1;
+    }
+  }, {
+    key: 'enableToggle',
+    value: function enableToggle() {
+      this.setState({ canToggle: true });
+    }
+  }, {
+    key: 'disableToggle',
+    value: function disableToggle() {
+      this.setState({ canToggle: false });
+    }
+  }, {
+    key: 'canToggle',
+    value: function canToggle() {
+      return this.state.canToggle;
+    }
+  }, {
+    key: 'classNames',
+    value: function classNames() {
+      return 'zoom-content' + (this.isZoomedIn() ? ' zoomed-in' : '');
     }
   }, {
     key: 'zoomStyles',

@@ -7,16 +7,20 @@ export default class Zoom extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {zoom: 1}
+    this.state = {
+      zoom: 1,
+      canToggle: true
+    }
   }
 
   render() {
     return (
       <div className='zoom-container'>
         <div
-          className={'zoom-content' + (this.isZoomedIn() ? ' zoomed-in' : '')}
+          className={ this.classNames() }
           onClick={ this.toggleZoom.bind(this) }
           style={ this.zoomStyles() }>
+
           { this.props.children }
         </div>
         <ZoomIn ref="zoomInComponent" onClick={ this.zoomIn.bind(this) } />
@@ -30,6 +34,11 @@ export default class Zoom extends React.Component {
   }
 
   toggleZoom(mouseEvent) {
+    if (!this.canToggle()) {
+      this.enableToggle()
+      return
+    }
+
     if (this.isZoomedIn()) {
       this.zoomOut()
     } else {
@@ -59,6 +68,22 @@ export default class Zoom extends React.Component {
 
   isZoomedIn() {
     return this.state.zoom > 1
+  }
+
+  enableToggle() {
+    this.setState({canToggle: true})
+  }
+
+  disableToggle() {
+    this.setState({canToggle: false})
+  }
+
+  canToggle() {
+    return this.state.canToggle
+  }
+
+  classNames() {
+    return 'zoom-content' + (this.isZoomedIn() ? ' zoomed-in' : '')
   }
 
   zoomStyles() {

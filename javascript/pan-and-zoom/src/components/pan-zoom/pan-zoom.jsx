@@ -11,7 +11,10 @@ export default class PanZoom extends React.Component {
           ref='zoom'
           onZoomIn={ this.onZoomIn.bind(this) }
           onZoomOut={ this.onZoomOut.bind(this) }>
-          <Pan ref='pan' currentZoom={this.currentZoom.bind(this)}>
+          <Pan
+            ref='pan'
+            currentZoom={ this.currentZoom.bind(this) }
+            disableZoomToggle={ this.disableZoomToggle.bind(this) }>
             <img
               ref='mainImage'
               src={ this.props.imageUrl }
@@ -25,6 +28,10 @@ export default class PanZoom extends React.Component {
 
   currentZoom() {
     return this.refs.zoom.getZoomFactor()
+  }
+
+  disableZoomToggle() {
+    return this.refs.zoom.disableToggle()
   }
 
   onZoomIn() {
