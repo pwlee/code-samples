@@ -85,18 +85,19 @@ export default class Pan extends React.Component {
 
   touchPan(touchEvent) {
     const touch = touchEvent.touches[0]
-    this.pan(touch.screenX, touch.screenY, true)
+    this.pan(touch.screenX, touch.screenY, true, touchEvent)
   }
 
   mousePan(mouseEvent) {
-    this.pan(mouseEvent.screenX, mouseEvent.screenY, false)
+    this.pan(mouseEvent.screenX, mouseEvent.screenY, false, mouseEvent)
   }
 
-  pan(screenX, screenY, isTouch) {
+  pan(screenX, screenY, isTouch, pointEvent) {
     if (!this.isPanning()) {
       return
     }
 
+    pointEvent.preventDefault()
     if (!isTouch) {
       this.props.disableZoomToggle()
     }

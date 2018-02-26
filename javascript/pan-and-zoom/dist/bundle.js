@@ -20226,20 +20226,21 @@ var Pan = function (_React$Component) {
     key: 'touchPan',
     value: function touchPan(touchEvent) {
       var touch = touchEvent.touches[0];
-      this.pan(touch.screenX, touch.screenY, true);
+      this.pan(touch.screenX, touch.screenY, true, touchEvent);
     }
   }, {
     key: 'mousePan',
     value: function mousePan(mouseEvent) {
-      this.pan(mouseEvent.screenX, mouseEvent.screenY, false);
+      this.pan(mouseEvent.screenX, mouseEvent.screenY, false, mouseEvent);
     }
   }, {
     key: 'pan',
-    value: function pan(screenX, screenY, isTouch) {
+    value: function pan(screenX, screenY, isTouch, pointEvent) {
       if (!this.isPanning()) {
         return;
       }
 
+      pointEvent.preventDefault();
       if (!isTouch) {
         this.props.disableZoomToggle();
       }
