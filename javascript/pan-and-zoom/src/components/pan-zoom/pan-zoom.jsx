@@ -11,7 +11,7 @@ export default class PanZoom extends React.Component {
           ref='zoom'
           onZoomIn={ this.onZoomIn.bind(this) }
           onZoomOut={ this.onZoomOut.bind(this) }>
-          <Pan ref='pan' currentZoomFactor={this.currentZoomFactor.bind(this)}>
+          <Pan ref='pan' currentZoom={this.currentZoom.bind(this)}>
             <img
               ref='mainImage'
               src={ this.props.imageUrl }
@@ -23,7 +23,7 @@ export default class PanZoom extends React.Component {
     )
   }
 
-  currentZoomFactor() {
+  currentZoom() {
     return this.refs.zoom.getZoomFactor()
   }
 
@@ -44,8 +44,7 @@ export default class PanZoom extends React.Component {
 
     if (imageHeight > containerHeight) {
       panZoomContainer.classList.add('top-aligned')
-    }
-    else {
+    } else {
       panZoomContainer.classList.remove('top-aligned')
     }
   }

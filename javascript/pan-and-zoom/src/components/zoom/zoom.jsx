@@ -15,9 +15,8 @@ export default class Zoom extends React.Component {
       <div className='zoom-container'>
         <div
           className='zoom-content'
-          onDoubleClick={ this.toggleZoom.bind(this) }
+          onClick={ this.toggleZoom.bind(this) }
           style={ this.zoomStyles() }>
-
           { this.props.children }
         </div>
         <ZoomIn ref="zoomInComponent" onClick={ this.zoomIn.bind(this) } />
@@ -32,9 +31,6 @@ export default class Zoom extends React.Component {
 
   toggleZoom(mouseEvent) {
     if (this.isZoomedIn()) {
-      if (this.props.isPanning && this.props.isPanning()) {
-        return
-      }
       this.zoomOut()
     } else {
       this.zoomIn()

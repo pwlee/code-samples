@@ -87,8 +87,8 @@ export default class Pan extends React.Component {
 
     // Compute the bounds of the scaled image
     const bounds = this.refs.panContent.getBoundingClientRect()
-    const maxXTranslate = bounds.width / Math.pow(this.props.currentZoomFactor(), 2)
-    const maxYTranslate = bounds.height / Math.pow(this.props.currentZoomFactor(), 2)
+    const maxXTranslate = bounds.width / Math.pow(this.props.currentZoom(), 2)
+    const maxYTranslate = bounds.height / Math.pow(this.props.currentZoom(), 2)
 
     // Pick the appropriate x/y coordinates which lie in bounds
     this.setState({

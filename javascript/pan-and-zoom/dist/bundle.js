@@ -19031,7 +19031,7 @@ var PanZoom = function (_React$Component) {
             onZoomOut: this.onZoomOut.bind(this) },
           _react2.default.createElement(
             _pan2.default,
-            { ref: 'pan', currentZoomFactor: this.currentZoomFactor.bind(this) },
+            { ref: 'pan', currentZoom: this.currentZoom.bind(this) },
             _react2.default.createElement('img', {
               ref: 'mainImage',
               src: this.props.imageUrl,
@@ -19042,8 +19042,8 @@ var PanZoom = function (_React$Component) {
       );
     }
   }, {
-    key: 'currentZoomFactor',
-    value: function currentZoomFactor() {
+    key: 'currentZoom',
+    value: function currentZoom() {
       return this.refs.zoom.getZoomFactor();
     }
   }, {
@@ -20076,7 +20076,7 @@ var Zoom = function (_React$Component) {
           'div',
           {
             className: 'zoom-content',
-            onDoubleClick: this.toggleZoom.bind(this),
+            onClick: this.toggleZoom.bind(this),
             style: this.zoomStyles() },
           this.props.children
         ),
@@ -20093,9 +20093,6 @@ var Zoom = function (_React$Component) {
     key: 'toggleZoom',
     value: function toggleZoom(mouseEvent) {
       if (this.isZoomedIn()) {
-        if (this.props.isPanning && this.props.isPanning()) {
-          return;
-        }
         this.zoomOut();
       } else {
         this.zoomIn();
@@ -20280,8 +20277,8 @@ var Pan = function (_React$Component) {
 
       // Compute the bounds of the scaled image
       var bounds = this.refs.panContent.getBoundingClientRect();
-      var maxXTranslate = bounds.width / Math.pow(this.props.currentZoomFactor(), 2);
-      var maxYTranslate = bounds.height / Math.pow(this.props.currentZoomFactor(), 2);
+      var maxXTranslate = bounds.width / Math.pow(this.props.currentZoom(), 2);
+      var maxYTranslate = bounds.height / Math.pow(this.props.currentZoom(), 2);
 
       // Pick the appropriate x/y coordinates which lie in bounds
       this.setState({
