@@ -20159,9 +20159,12 @@ var Pan = function (_React$Component) {
             ref: 'panContent',
             className: 'pan-content',
             style: this.styles(),
-            onMouseDown: this.startPan.bind(this),
+            onMouseDown: this.startMousePan.bind(this),
+            onTouchStart: this.startTouchPan.bind(this),
             onMouseUp: this.endPan.bind(this),
-            onMouseMove: this.pan.bind(this) },
+            onTouchEnd: this.endPan.bind(this),
+            onMouseMove: this.mousePan.bind(this),
+            onTouchMove: this.touchPan.bind(this) },
           this.props.children
         )
       );
@@ -20187,19 +20190,30 @@ var Pan = function (_React$Component) {
       return this.state.panning;
     }
   }, {
+    key: 'startTouchPan',
+    value: function startTouchPan(touchEvent) {
+      var touch = touchEvent.touches[0];
+      this.startPan(touch.screenX, touch.screenY);
+    }
+  }, {
+    key: 'startMousePan',
+    value: function startMousePan(mouseEvent) {
+      this.startPan(mouseEvent.screenX, mouseEvent.screenY);
+    }
+  }, {
     key: 'startPan',
-    value: function startPan(mouseEvent) {
+    value: function startPan(screenX, screenY) {
       if (this.isEnabled()) {
         this.setState({
           panning: true,
-          panStartX: mouseEvent.screenX,
-          panStartY: mouseEvent.screenY
+          panStartX: screenX,
+          panStartY: screenY
         });
       }
     }
   }, {
     key: 'endPan',
-    value: function endPan(mouseEvent) {
+    value: function endPan() {
       if (this.isPanning()) {
         this.setState({
           panning: false,
@@ -20209,17 +20223,30 @@ var Pan = function (_React$Component) {
       }
     }
   }, {
+    key: 'touchPan',
+    value: function touchPan(touchEvent) {
+      var touch = touchEvent.touches[0];
+      this.pan(touch.screenX, touch.screenY, true);
+    }
+  }, {
+    key: 'mousePan',
+    value: function mousePan(mouseEvent) {
+      this.pan(mouseEvent.screenX, mouseEvent.screenY, false);
+    }
+  }, {
     key: 'pan',
-    value: function pan(mouseEvent) {
+    value: function pan(screenX, screenY, isTouch) {
       if (!this.isPanning()) {
         return;
       }
 
-      this.props.disableZoomToggle();
+      if (!isTouch) {
+        this.props.disableZoomToggle();
+      }
 
       // Calculate how far the mouse has moved from the initial click/touch point
-      var xDifference = mouseEvent.screenX - this.state.panStartX;
-      var yDifference = mouseEvent.screenY - this.state.panStartY;
+      var xDifference = screenX - this.state.panStartX;
+      var yDifference = screenY - this.state.panStartY;
 
       // Add the difference on top of all/any previous pans
       var newXTranslate = this.state.cumulativeOffsetX + xDifference;

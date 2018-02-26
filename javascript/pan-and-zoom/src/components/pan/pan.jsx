@@ -25,9 +25,12 @@ export default class Pan extends React.Component {
           ref="panContent"
           className='pan-content'
           style={ this.styles() }
-          onMouseDown={ this.startPan.bind(this) }
+          onMouseDown={ this.startMousePan.bind(this) }
+          onTouchStart={ this.startTouchPan.bind(this) }
           onMouseUp={ this.endPan.bind(this) }
-          onMouseMove={ this.pan.bind(this) } >
+          onTouchEnd={ this.endPan.bind(this) }
+          onMouseMove={ this.mousePan.bind(this) }
+          onTouchMove={ this.touchPan.bind(this) } >
 
           { this.props.children }
         </div>
@@ -51,17 +54,26 @@ export default class Pan extends React.Component {
     return this.state.panning
   }
 
-  startPan(mouseEvent) {
+  startTouchPan(touchEvent) {
+    const touch = touchEvent.touches[0]
+    this.startPan(touch.screenX, touch.screenY)
+  }
+
+  startMousePan(mouseEvent) {
+    this.startPan(mouseEvent.screenX, mouseEvent.screenY)
+  }
+
+  startPan(screenX, screenY) {
     if (this.isEnabled()) {
       this.setState({
         panning: true,
-        panStartX: mouseEvent.screenX,
-        panStartY: mouseEvent.screenY
+        panStartX: screenX,
+        panStartY: screenY
       })
     }
   }
 
-  endPan(mouseEvent) {
+  endPan() {
     if (this.isPanning()) {
       this.setState({
         panning: false,
@@ -71,16 +83,27 @@ export default class Pan extends React.Component {
     }
   }
 
-  pan(mouseEvent) {
+  touchPan(touchEvent) {
+    const touch = touchEvent.touches[0]
+    this.pan(touch.screenX, touch.screenY, true)
+  }
+
+  mousePan(mouseEvent) {
+    this.pan(mouseEvent.screenX, mouseEvent.screenY, false)
+  }
+
+  pan(screenX, screenY, isTouch) {
     if (!this.isPanning()) {
       return
     }
 
-    this.props.disableZoomToggle()
+    if (!isTouch) {
+      this.props.disableZoomToggle()
+    }
 
     // Calculate how far the mouse has moved from the initial click/touch point
-    const xDifference = mouseEvent.screenX - this.state.panStartX
-    const yDifference = mouseEvent.screenY - this.state.panStartY
+    const xDifference = screenX - this.state.panStartX
+    const yDifference = screenY - this.state.panStartY
 
     // Add the difference on top of all/any previous pans
     const newXTranslate = this.state.cumulativeOffsetX + xDifference
