@@ -21,7 +21,9 @@ html, body {
   background-color: #f4f4f4; }
 
 html body header {
+  display: -ms-flexbox;
   display: flex;
+  position: -webkit-sticky;
   position: sticky;
   top: 0px;
   height: 30px;
@@ -30,17 +32,21 @@ html body header {
   background-color: #ffffff;
   border-bottom: 1px solid #dddddd;
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
-  align-items: center; }
+  -ms-flex-align: center;
+      align-items: center; }
 
 html body nav {
   display: none; }
 
 @media (min-width: 1000px) {
   html body .application-layout {
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row; }
+    -ms-flex-direction: row;
+        flex-direction: row; }
     html body .application-layout nav {
       display: block;
+      position: -webkit-sticky;
       position: sticky;
       top: 60px;
       padding: 30px;
@@ -50,40 +56,55 @@ html body nav {
       width: 170px;
       border-right: 1px solid #dddddd;
       box-shadow: 5px 0 5px -3px rgba(0, 0, 0, 0.15);
-      flex-shrink: 0; }
+      -ms-flex-negative: 0;
+          flex-shrink: 0; }
     html body .application-layout .product {
+      display: -ms-flexbox;
       display: flex;
-      flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
       width: calc(100vw - 200px); }
       html body .application-layout .product .image {
         width: 60%;
+        position: -webkit-sticky;
         position: sticky;
         height: calc(100vh - 60px);
         top: 60px;
         position: sticky; }
       html body .application-layout .product .description {
         width: 40%;
-        flex-shrink: 0; }
+        -ms-flex-negative: 0;
+            flex-shrink: 0; }
         html body .application-layout .product .description .content {
           padding: 30px; } }
 
 .pan-zoom-container {
   height: 100%;
+  display: -ms-flexbox;
   display: flex;
+  -ms-flex-direction: row;
   flex-direction: row;
+  -ms-flex-align: center;
   align-items: center;
+  -ms-flex-pack: center;
   justify-content: center;
   position: relative;
   overflow: hidden; }
   .pan-zoom-container.top-aligned {
+    -ms-flex-align: start;
     align-items: flex-start;
+    -ms-flex-pack: center;
     justify-content: center; }
 
 .pan-container .pan-content img {
   max-width: 100%;
   max-height: 100%;
-  user-select: none;
-  touch-action: none; }
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -ms-touch-action: none;
+      touch-action: none; }
 
 .zoom-container .zoom-content {
   transition: transform 200ms;
