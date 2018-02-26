@@ -12,7 +12,11 @@ export default class PanZoom extends React.Component {
           onZoomIn={ this.onZoomIn.bind(this) }
           onZoomOut={ this.onZoomOut.bind(this) }>
           <Pan ref='pan' currentZoomFactor={this.currentZoomFactor.bind(this)}>
-            <img ref='mainImage' src={ this.props.imageUrl } draggable='false' />
+            <img
+              ref='mainImage'
+              src={ this.props.imageUrl }
+              onLoad={ this.ensureImageFit.bind(this) }
+              draggable='false' />
           </Pan>
         </Zoom>
       </div>
@@ -33,26 +37,21 @@ export default class PanZoom extends React.Component {
     this.refs.pan.disable()
   }
 
-  // TODO: gross
   ensureImageFit() {
     const containerHeight = this.refs.panZoomContainer.offsetHeight
     const imageHeight = this.refs.mainImage.offsetHeight
-
-    this.refs.mainImage.width = this.refs.mainImage.offsetWidth
-    this.refs.mainImage.height = this.refs.mainImage.offsetHeight
+    const panZoomContainer = this.refs.panZoomContainer
 
     if (imageHeight > containerHeight) {
-      this.refs.panZoomContainer.classList.add('top-aligned')
+      panZoomContainer.classList.add('top-aligned')
     }
     else {
-      this.refs.panZoomContainer.classList.remove('top-aligned')
+      panZoomContainer.classList.remove('top-aligned')
     }
   }
 
-  // TODO: gross-ish
   componentDidMount() {
     window.addEventListener('resize', this.ensureImageFit.bind(this))
-    this.refs.mainImage.addEventListener('load', this.ensureImageFit.bind(this))
   }
 
   componentWillUnmount() {

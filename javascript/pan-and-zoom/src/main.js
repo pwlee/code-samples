@@ -7,7 +7,8 @@ import PanZoom from './components/pan-zoom/pan-zoom.jsx'
 const styles = require('./css/main.scss')
 
 document.addEventListener('DOMContentLoaded', () => {
-  const imageUrl = 'https://bonobos-prod-s3.imgix.net/products/18158/original/SHIRT_ShortSleeve_ZebraRun_JetBlack_hero1.jpg?h=2000&w=2000'
+  const imageUrl = 'https://bonobos-prod-s3.imgix.net/products/7849/original/SHIRT_Casual_EndOnEnd_Blue_hero1.jpg?h=500&w=500'
+
   render(
     <PanZoom imageUrl={imageUrl} />,
     document.querySelector('.product > .image')

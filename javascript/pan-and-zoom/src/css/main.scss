@@ -1,18 +1,5 @@
-html, body {
-  background-color: #efefef;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-}
-
-p {
-  margin-bottom: 20px;
-}
-
-$light-gray: #c9c9c9;
-
+@import "colors.scss";
+@import "typography.scss";
 @import "layout.scss";
 
 // Components

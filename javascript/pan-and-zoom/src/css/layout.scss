@@ -1,14 +1,24 @@
+html, body {
+  background-color: $off-white;
+}
+
 html {
   body {
     header {
+      display: flex;
       position: sticky;
       top: 0px;
       height: 30px;
-      padding: 15px;
+      padding: 15px 30px;
       z-index: 3;
-      background-color: #fff;
-      border-bottom: 1px solid #ddd;
+      background-color: $white;
+      border-bottom: 1px solid $light-gray;
       box-shadow: 0 3px 3px rgba(0,0,0,.10);
+      align-items: center;
+    }
+
+    nav {
+      display: none;
     }
 
     @media (min-width: 1000px) {
@@ -17,14 +27,15 @@ html {
         flex-direction: row;
 
         nav {
+          display: block;
           position: sticky;
           top: 60px;
-          padding: 15px;
+          padding: 30px;
           z-index: 2;
-          background-color: #fff;
-          height: calc(100vh - 90px);
+          background-color: $white;
+          height: calc(100vh - 100px);
           width: 170px;
-          border-right: 1px solid #ddd;
+          border-right: 1px solid $light-gray;
           box-shadow: 5px 0 5px -3px rgba(0,0,0,.15);
           flex-shrink: 0;
         }
@@ -36,8 +47,6 @@ html {
 
           .image {
             width: 60%;
-            flex-shrink: 0;
-            background-color: #fff;
             position: sticky;
             height: calc(100vh - 60px);
             top: 60px;

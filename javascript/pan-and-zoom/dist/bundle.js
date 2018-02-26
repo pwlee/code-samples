@@ -86,7 +86,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var styles = __webpack_require__(27);
 
 document.addEventListener('DOMContentLoaded', function () {
-  var imageUrl = 'https://bonobos-prod-s3.imgix.net/products/18158/original/SHIRT_ShortSleeve_ZebraRun_JetBlack_hero1.jpg?h=2000&w=2000';
+  var imageUrl = 'https://bonobos-prod-s3.imgix.net/products/7849/original/SHIRT_Casual_EndOnEnd_Blue_hero1.jpg?h=500&w=500';
+
   (0, _reactDom.render)(_react2.default.createElement(_panZoom2.default, { imageUrl: imageUrl }), document.querySelector('.product > .image'));
 });
 
@@ -19031,7 +19032,11 @@ var PanZoom = function (_React$Component) {
           _react2.default.createElement(
             _pan2.default,
             { ref: 'pan', currentZoomFactor: this.currentZoomFactor.bind(this) },
-            _react2.default.createElement('img', { ref: 'mainImage', src: this.props.imageUrl, draggable: 'false' })
+            _react2.default.createElement('img', {
+              ref: 'mainImage',
+              src: this.props.imageUrl,
+              onLoad: this.ensureImageFit.bind(this),
+              draggable: 'false' })
           )
         )
       );
@@ -19053,32 +19058,23 @@ var PanZoom = function (_React$Component) {
       this.refs.pan.reset();
       this.refs.pan.disable();
     }
-
-    // TODO: gross
-
   }, {
     key: 'ensureImageFit',
     value: function ensureImageFit() {
       var containerHeight = this.refs.panZoomContainer.offsetHeight;
       var imageHeight = this.refs.mainImage.offsetHeight;
-
-      this.refs.mainImage.width = this.refs.mainImage.offsetWidth;
-      this.refs.mainImage.height = this.refs.mainImage.offsetHeight;
+      var panZoomContainer = this.refs.panZoomContainer;
 
       if (imageHeight > containerHeight) {
-        this.refs.panZoomContainer.classList.add('top-aligned');
+        panZoomContainer.classList.add('top-aligned');
       } else {
-        this.refs.panZoomContainer.classList.remove('top-aligned');
+        panZoomContainer.classList.remove('top-aligned');
       }
     }
-
-    // TODO: gross-ish
-
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       window.addEventListener('resize', this.ensureImageFit.bind(this));
-      this.refs.mainImage.addEventListener('load', this.ensureImageFit.bind(this));
     }
   }, {
     key: 'componentWillUnmount',
