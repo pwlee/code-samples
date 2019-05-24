@@ -13,7 +13,7 @@
 // Because nums[0] + nums[1] = 2 + 7 = 9,
 // return [0, 1].
 
-const twoSum = function(nums, target) {
+const twoSum = (nums, target) => {
   const mappedValues = {}
 
   // map each value to its index
@@ -24,7 +24,6 @@ const twoSum = function(nums, target) {
   
   for (let i = 0; i < nums.length; i++) {
     const difference = target - nums[i]
-
     if (mappedValues[difference] && mappedValues[difference] !== i) {
       return [i, mappedValues[difference]]
     }
