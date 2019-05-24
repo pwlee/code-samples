@@ -25,7 +25,7 @@
  * @param {ListNode} l2
  * @return {ListNode}
  */
-var addTwoNumbers = function(l1, l2) {
+const addTwoNumbers = (l1, l2) => {
   let leftNode = l1
   let rightNode = l2
   let previousOverflow = 0
