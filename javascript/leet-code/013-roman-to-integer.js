@@ -67,7 +67,7 @@ const romanToInt = (s) => {
   const chars = s.split("");
   let sum = 0;
 
-  for (var i = 0; i < chars.length; i++) {
+  for (let i = 0; i < chars.length; i++) {
     const char = chars[i];
     const nextChar = chars[i+1];
   
