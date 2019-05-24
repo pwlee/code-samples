@@ -13,26 +13,22 @@
 // Because nums[0] + nums[1] = 2 + 7 = 9,
 // return [0, 1].
 
-/**
- * @param {number[]} nums
- * @param {number} target
- * @return {number[]}
- */
-var twoSum = function(nums, target) {
-    const mappedValues = {}
+const twoSum = function(nums, target) {
+  const mappedValues = {}
 
-    // map each value to its index
-    // { 2: 0, 7: 1, 11: 2, 15: 3 }
-    for (let i = 0; i < nums.length; i++) {
-        mappedValues[nums[i]] = i;
+  // map each value to its index
+  // { 2: 0, 7: 1, 11: 2, 15: 3 }
+  for (let i = 0; i < nums.length; i++) {
+    mappedValues[nums[i]] = i;
+  }
+  
+  for (let i = 0; i < nums.length; i++) {
+    const difference = target - nums[i]
+
+    if (mappedValues[difference] && mappedValues[difference] !== i) {
+      return [i, mappedValues[difference]]
     }
-    
-    for (let i = 0; i < nums.length; i++) {
-        const difference = target - nums[i]
-        if (mappedValues[difference] && mappedValues[difference] !== i) {
-            return [i, mappedValues[difference]]
-        }
-    }
-    
-    return []
-};
+  }
+  
+  return []
+}
