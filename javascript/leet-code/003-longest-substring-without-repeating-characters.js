@@ -27,28 +27,28 @@
 // Note: This is not the most optimal solution. Current implementation is O(n^2).
 // Using a "sliding window" improves runtime to O(n). See:
 // https://leetcode.com/problems/longest-substring-without-repeating-characters/solution/
-var lengthOfLongestSubstring = function(s) {
-    let maxLength = 0
-    
-    for(let i = 0; i < s.length; i++) {
-        let currentSubstring = ""
-        let encounteredChars = {}
+const lengthOfLongestSubstring = (s) => {
+  let maxLength = 0
+  
+  for(let i = 0; i < s.length; i++) {
+    let currentSubstring = ""
+    let encounteredChars = {}
 
-        for(let j = i; j < s.length; j++) {
-            const currentChar = s[j]
-            
-            if (!encounteredChars[currentChar]) {
-                currentSubstring += currentChar
-                encounteredChars[currentChar] = true
-                
-                if (currentSubstring.length > maxLength) {
-                    maxLength = currentSubstring.length
-                }
-            } else {
-                break
-            }
-        }    
-    }
-    
-    return maxLength
-};
+    for(let j = i; j < s.length; j++) {
+      const currentChar = s[j]
+      
+      if (!encounteredChars[currentChar]) {
+        currentSubstring += currentChar
+        encounteredChars[currentChar] = true
+        
+        if (currentSubstring.length > maxLength) {
+          maxLength = currentSubstring.length
+        }
+      } else {
+        break
+      }
+    }  
+  }
+  
+  return maxLength
+}
