@@ -22,30 +22,30 @@
  * @return {string}
  */
 
-var longestCommonPrefix = function(strs) {
-    if (strs.length == 0) { return "" }
+const longestCommonPrefix = (strs) => {
+  if (strs.length == 0) { return "" }
 
-    let commonPrefix = ""
-    let keepItGoing = true
-    let letterIndex = 0
-    
-    while(keepItGoing) {
-        const commonLetter = strs[0][letterIndex]
+  let commonPrefix = ""
+  let keepItGoing = true
+  let letterIndex = 0
+  
+  while(keepItGoing) {
+    const commonLetter = strs[0][letterIndex]
 
-        for (const word of strs) {
-            if (letterIndex >= word.length || word[letterIndex] !== commonLetter) {
-                keepItGoing = false
-                break
-            }
-        }
-        
-        if (!keepItGoing) {
-            break
-        }
-        
-        commonPrefix += commonLetter
-        letterIndex++
+    for (const word of strs) {
+      if (letterIndex >= word.length || word[letterIndex] !== commonLetter) {
+        keepItGoing = false
+        break
+      }
     }
     
-    return commonPrefix
-};
+    if (!keepItGoing) {
+      break
+    }
+    
+    commonPrefix += commonLetter
+    letterIndex++
+  }
+  
+  return commonPrefix
+}
