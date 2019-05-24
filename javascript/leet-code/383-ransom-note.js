@@ -13,7 +13,7 @@
 // canConstruct("aa", "ab") -> false
 // canConstruct("aa", "aab") -> true
 
-function canConstruct(ransomNote, magazine) {
+const canConstruct = (ransomNote, magazine) => {
   const magazineWordCounts = buildWordCounts(magazine)
 
   for (const word of ransomNote.split("")) {
@@ -27,7 +27,7 @@ function canConstruct(ransomNote, magazine) {
   return true
 }
 
-function buildWordCounts(input) {
+const buildWordCounts = (input) => {
   const words = input.split("")
   const wordCounts = {}
 
@@ -41,9 +41,3 @@ function buildWordCounts(input) {
 
   return wordCounts
 }
-
-// const magazine = "dog owners across the us are happy to give up to one walk per day but they say some dogs want dog"
-// const ransomNote = "dog owners happy dog day"
-
-// console.log(buildWordCounts(magazine))
-// console.log(canCreateRansomNote(magazine, ransomNote))
