@@ -44,54 +44,53 @@
  * @return {number}
  */
 
-var ladderLength = function(beginWord, endWord, wordList) {
-    const queue = [beginWord]
-    const visited = {}
-    visited[beginWord] = true
-    const previous = {}
-    
-    let found = false
-    
-    while(queue.length > 0) {
-        const currentWord = queue.shift()
+const ladderLength = (beginWord, endWord, wordList) => {
+  const queue = [beginWord]
+  const visited = { [beginWord]: true }
+  const previous = {}
+  
+  let found = false
+  
+  while(queue.length > 0) {
+    const currentWord = queue.shift()
 
-        if (currentWord === endWord) {
-            found = true
-            break
-        }
-        
-        for (const neighborWord of wordList) {
-            if (!visited[neighborWord] && numberOfDifferences(currentWord, neighborWord) === 1) {
-                queue.push(neighborWord)
-                visited[neighborWord] = true
-                previous[neighborWord] = currentWord
-            }
-        }
+    if (currentWord === endWord) {
+      found = true
+      break
     }
     
-    if (found) {
-        let pathLength = 1
-        let currentWord = endWord
+    for (const neighborWord of wordList) {
+      if (!visited[neighborWord] && numberOfDifferences(currentWord, neighborWord) === 1) {
+        queue.push(neighborWord)
+        visited[neighborWord] = true
+        previous[neighborWord] = currentWord
+      }
+    }
+  }
+  
+  if (found) {
+    let pathLength = 1
+    let currentWord = endWord
 
-        while(currentWord != beginWord) {
-            currentWord = previous[currentWord]
-            pathLength++
-        }
-        
-        return pathLength
+    while(currentWord != beginWord) {
+      currentWord = previous[currentWord]
+      pathLength++
     }
     
-    return 0
-};
+    return pathLength
+  }
+  
+  return 0
+}
 
-var numberOfDifferences = function(word1, word2) {
-    let numDifferences = 0
-    
-    for (let i = 0; i < word1.length; i++) {
-        if (word1[i] !== word2[i]) {
-            numDifferences++
-        }
+const numberOfDifferences = (word1, word2) => {
+  let numDifferences = 0
+  
+  for (let i = 0; i < word1.length; i++) {
+    if (word1[i] !== word2[i]) {
+      numDifferences++
     }
-    
-    return numDifferences
+  }
+  
+  return numDifferences
 }
