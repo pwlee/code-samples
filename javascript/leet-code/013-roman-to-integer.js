@@ -47,37 +47,37 @@
  * @return {number}
  */
 
-var vals = {
-    "I": 1,
-    "V": 5,
-    "X": 10,
-    "L": 50,
-    "C": 100,
-    "D": 500,
-    "M": 1000,
+const vals = {
+  "I": 1,
+  "V": 5,
+  "X": 10,
+  "L": 50,
+  "C": 100,
+  "D": 500,
+  "M": 1000,
 };
 
-var subtractionGroups = {
-    "I": ["V", "X"],
-    "X": ["L", "C"],
-    "C": ["D", "M"],
+const subtractionGroups = {
+  "I": ["V", "X"],
+  "X": ["L", "C"],
+  "C": ["D", "M"],
 }
 
-var romanToInt = function(s) {
-    var chars = s.split("");
-    var sum = 0;
+const romanToInt = (s) => {
+  const chars = s.split("");
+  let sum = 0;
 
-    for (var i = 0; i < chars.length; i++) {
-        var char = chars[i];
-        var nextChar = chars[i+1];
-    
-        if (subtractionGroups[char] && subtractionGroups[char].indexOf(nextChar) !== -1) {
-            sum += vals[nextChar] - vals[char]
-            i++
-        } else {
-            sum += vals[char]
-        }
+  for (var i = 0; i < chars.length; i++) {
+    const char = chars[i];
+    const nextChar = chars[i+1];
+  
+    if (subtractionGroups[char] && subtractionGroups[char].indexOf(nextChar) !== -1) {
+      sum += vals[nextChar] - vals[char]
+      i++
+    } else {
+      sum += vals[char]
     }
-    
-    return sum;
-};
+  }
+  
+  return sum;
+}
