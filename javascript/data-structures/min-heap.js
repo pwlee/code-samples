@@ -28,19 +28,19 @@ class MinHeap {
   // -----------------
   
   // Index helpers
-  leftChildIndex  = (index) => (index * 2 + 1)
-  rightChildIndex = (index) => (index * 2 + 2)
-  parentIndex     = (index) => (Math.floor((index - 1) / 2))
+  leftChildIndex(index)  { return index * 2 + 1 }
+  rightChildIndex(index) { return index * 2 + 2 }
+  parentIndex(index)     { return Math.floor((index - 1) / 2) }
   
   // Existence helpers
-  hasLeftChild  = (index) => (this.leftChildIndex(index) < this.data.length)
-  hasRightChild = (index) => (this.rightChildIndex(index) < this.data.length)
-  hasParent     = (index) => (this.parentIndex(index) >= 0)
+  hasLeftChild(index)  { return this.leftChildIndex(index) < this.data.length }
+  hasRightChild(index) { return this.rightChildIndex(index) < this.data.length }
+  hasParent(index)     { return this.parentIndex(index) >= 0 }
 
   // Access helpers
-  leftChild  = (index) => (this.data[this.leftChildIndex(index)])
-  rightChild = (index) => (this.data[this.rightChildIndex(index)])
-  parent     = (index) => (this.data[this.parentIndex(index)])
+  leftChild(index)  { return this.data[this.leftChildIndex(index)] }
+  rightChild(index) { return this.data[this.rightChildIndex(index)] }
+  parent(index)     { return this.data[this.parentIndex(index)] }
 
   heapifyUp() {
     let index = this.data.length - 1
