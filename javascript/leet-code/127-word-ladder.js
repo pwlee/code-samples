@@ -44,53 +44,44 @@
  * @return {number}
  */
 
-const ladderLength = (beginWord, endWord, wordList) => {
-  const queue = [beginWord]
+const ladderLength = (beginWord, endWord, wordList) => {  
+  const neighbors = [beginWord]
   const visited = { [beginWord]: true }
-  const previous = {}
   
-  let found = false
-  
-  while(queue.length > 0) {
-    const currentWord = queue.shift()
+  let sequenceLength = 1
 
-    if (currentWord === endWord) {
-      found = true
-      break
-    }
+  while (neighbors.length > 0) {
+    let numNeighbors = neighbors.length
     
-    for (const neighborWord of wordList) {
-      if (!visited[neighborWord] && numberOfDifferences(currentWord, neighborWord) === 1) {
-        queue.push(neighborWord)
-        visited[neighborWord] = true
-        previous[neighborWord] = currentWord
+    for (let i = 0; i < numNeighbors; i++) {
+      const currWord = neighbors.shift()
+      
+      if (currWord === endWord) {
+        return sequenceLength
+      }
+      
+      for (const nextWord of wordList) {
+        if (!visited[nextWord] && numDiff(currWord, nextWord) === 1) {
+          neighbors.push(nextWord)
+          visited[nextWord] = true
+        }
       }
     }
-  }
-  
-  if (found) {
-    let pathLength = 1
-    let currentWord = endWord
-
-    while(currentWord != beginWord) {
-      currentWord = previous[currentWord]
-      pathLength++
-    }
     
-    return pathLength
+    sequenceLength++
   }
   
   return 0
 }
 
-const numberOfDifferences = (word1, word2) => {
-  let numDifferences = 0
+const numDiff = (wordA, wordB) => {
+  let differences = 0
   
-  for (let i = 0; i < word1.length; i++) {
-    if (word1[i] !== word2[i]) {
-      numDifferences++
+  for (let i = 0; i < wordA.length; i++) {
+    if (wordA[i] !== wordB[i]) {
+      differences++
     }
   }
   
-  return numDifferences
+  return differences
 }
