@@ -10,7 +10,7 @@
 // any string is a subsequence of itself and an empty string is a subsequence of
 // any string.
 // 
-// The input will be two strings, and the output needs to be the length of the\
+// The input will be two strings, and the output needs to be the length of the
 // longest uncommon subsequence. If the longest uncommon subsequence doesn't exist,
 // return -1.
 // 
@@ -31,6 +31,25 @@
  * @return {number}
  */
 
+// The intuition here is that "Trivially, any string is a subsequence of itself"
+// So, unless the words are the same, the longest uncommon subsequence is just
+// the length of the longer word. If the words are the same length, you just need
+// to check that the words aren't the same.
+
+// Ex: Different length strings
+// a: "hotdog"
+// b: "dog"
+// return 6, longest uncommon subsequence is "hotdog"
+
+// Ex: Same length strings
+// a: "abc"
+// b: "abl"
+// return 3, longest uncommon subsequence is either "abc" or "abl" (doesn't matter which)
+
+// Ex: Strings are equal
+// a: "abc"
+// b: "abc"
+// return -1
 const findLUSlength = function(a, b) {
   if (a === b) {
     return -1
