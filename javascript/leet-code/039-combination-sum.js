@@ -35,27 +35,24 @@
  * @return {number[][]}
  */
 const combinationSum = (candidates, target) => {
-  const uniqueSets = {}
-  
-  comSumRecur(candidates, [], 0, target, uniqueSets)
-
-  return extractSolutions(uniqueSets)
+  const sets = {}
+  comSumRecur(candidates, [], 0, target, sets)
+  return extractSolutions(sets)
 }
 
-const comSumRecur = (candidates, currentSet, currentSum, target, solutions) => {
-  if (currentSum === target) {
-    const setKey = toHashKey(currentSet)
-    solutions[setKey] = true
+const comSumRecur = (candidates, set, sum, target, solutions) => {
+  if (sum === target) {
+    solutions[toHashKey(set)] = true
     return
-  } else if (currentSum > target) {
+  } else if (sum > target) {
     return
   }
   
   for (const candidate of candidates) {
-    const nextSet = currentSet.slice()
+    const nextSet = set.slice()
     nextSet.push(candidate)
-    
-    comSumRecur(candidates, nextSet, currentSum + candidate, target, solutions)
+
+    comSumRecur(candidates, nextSet, sum + candidate, target, solutions)
   }
 }
 
@@ -67,10 +64,8 @@ const toHashKey = (solutionSet) => {
 
 const extractSolutions = (sets) => {
   const solutions = []
-  
   for (const key in sets) {
     solutions.push(key.split(KEY_SEPARATOR))
   }
-  
   return solutions
 }
