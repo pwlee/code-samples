@@ -20,66 +20,48 @@
  * @return {number}
  */
 const minDistance = (word1, word2) => {
-  const subseqs1 = generateSubsequences(word1)
-  const subseqs2 = generateSubsequences(word2)
-  const longestCommonSubseq = findLongestCommonSubseq(subseqs1, subseqs2)
-  
-  return (
-    deleteDistanceFrom(word1, longestCommonSubseq) +
-    deleteDistanceFrom(word2, longestCommonSubseq)
-  )
+  if (word1 === "" && word2 === "") {
+    return 0
+  }
+
+  const lcsLength = findLCSLength(word1, word2, 0, 0, [])
+
+  // Once we know the lcs length, we can calculate how many letters need to be
+  // deleted using the formula: s1.length + s2.length - (2 * lcs.length)
+  // (we don't care about which letters need to be deleted, only how many)
+  // Ex:
+  //   word1: "hotdog"   (length: 6)
+  //   word2: "snotlog"  (length: 7)
+  //   lcs:   "otog"     (length: 4)
+  //   dels:  5          (6 + 7) - (2 * 4)
+  return word1.length + word2.length - (2 * lcsLength)
 }
 
-const generateSubsequences = (string) => {
-  const subseqs = {}
-  
-  generateSubseqRecur(string.split(""), "", subseqs)
-  
-  return subseqs
-}
-
-const generateSubseqRecur = (remainingChars, subseq, subseqs) => {
-  if (remainingChars.length === 0) {
-    subseqs[subseq] = 1
-    return
+// Note: We don't actually care what the longest common subsequence is, we only
+// care about its length. We can find the lcs recursively using two iterators (i, j).
+// If the chars at each iterator match, add one and advance both iterators.
+// If the chars don't match, we have two cases to consider:
+// a) i is moved forward while j stays in place
+// b) j is moved forward while i stays in place
+// The max lcs length will be the max of those cases.
+const findLCSLength = (word1, word2, i, j, memo) => {
+  if (i == word1.length || j == word2.length) {
+    return 0
   }
   
-  const newRemainingChars = remainingChars.slice()
-  const nextChar = newRemainingChars.splice(0,1)[0]
-  generateSubseqRecur(newRemainingChars, subseq, subseqs)
-  generateSubseqRecur(newRemainingChars, subseq + nextChar, subseqs)
-}
-
-const findLongestCommonSubseq = (subseqs1, subseqs2) => {
-  let longestCommonSubseq = ""
-  
-  for (const subseq1 in subseqs1) {
-    if (subseqs2[subseq1] && subseq1.length > longestCommonSubseq.length) {
-      longestCommonSubseq = subseq1
-    }
+  memo[i] = memo[i] || []
+  if (typeof memo[i][j] !== 'undefined') {
+    return memo[i][j]
   }
   
-  return longestCommonSubseq
-}
-
-const deleteDistanceFrom = (word, subseq) => {
-  let distance = 0
-  let i = 0
-  
-  while (word !== subseq && word.length > 0) {
-    if (word[i] === subseq[i]) {
-      i++
-    } else {
-      word = removeCharAt(word, i)
-      distance++
-    }
+  if (word1[i] === word2[j]) {
+    memo[i][j] = 1 + findLCSLength(word1, word2, i+1, j+1, memo)
+  } else {
+    memo[i][j] = Math.max(
+      findLCSLength(word1, word2, i+1, j, memo),
+      findLCSLength(word1, word2, i, j+1, memo)
+    )
   }
-  
-  return distance
-}
-
-const removeCharAt = (word, i) => {
-  const chars = word.split("")
-  chars.splice(i, 1)
-  return chars.join("")
+      
+  return memo[i][j]
 }
