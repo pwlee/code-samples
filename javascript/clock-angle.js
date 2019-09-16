@@ -12,10 +12,10 @@
 // Output: 75
 
 const timeToDegrees = (time) => {
-  const [hour, minute] = time.split(":").map((x) => parseInt(x))
+  const [hour, minute] = time.split(":").map((x) => parseInt(x));
 
-  if (hour > 12) { throw "Minute can't be greater than 12" }
-  if (minute > 59) { throw "Minute can't be greater than 59" }
+  if (hour > 12)   { throw "Minute can't be greater than 12"; }
+  if (minute > 59) { throw "Minute can't be greater than 59"; }
   
   const hourHandMinute    = hourToMinute(hour, minute);
   const hourHandDegrees   = minuteToDegrees(hourHandMinute);
