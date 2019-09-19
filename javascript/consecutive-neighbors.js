@@ -51,7 +51,8 @@ function calculateLongestChain(grid){
 
   for (var x = 0; x < grid.length; x++){
     for (var y = 0; y < grid[x].length; y++){
-      var currentChainLength = calculateLongestChainAt(grid, new Position(x, y))
+      var currentChainLength = calculateLongestChainAt(grid, new Position(x, y));
+
       if (currentChainLength > maxChainLength){
         maxChainLength = currentChainLength;
       }
