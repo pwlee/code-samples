@@ -1,0 +1,32 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <canvas id="game-canvas" width="1000" height="800">
+    </canvas>
+
+    <!-- TODO: Convert to import/export -->
+    <script src="./src/Tile.js"></script>
+    <script src="./src/pieces/Piece.js"></script>
+    <script src="./src/pieces/IPiece.js"></script>
+    <script src="./src/pieces/OPiece.js"></script>
+    <script src="./src/pieces/TPiece.js"></script>
+    <script src="./src/pieces/SPiece.js"></script>
+    <script src="./src/pieces/ZPiece.js"></script>
+    <script src="./src/pieces/JPiece.js"></script>
+    <script src="./src/pieces/LPiece.js"></script>
+    <script src="./src/Board.js"></script>
+    <script src="./src/Game.js"></script>
+
+    <script type="text/javascript">
+        const mainCanvas = document.getElementById("game-canvas");
+        const context = mainCanvas.getContext("2d");
+
+        const BLOCK_SIZE = 30;
+        const DRAW_INTERVAL_MS = 10;
+        let DROP_INTERVAL_MS = 1000;
+
+        new Game(mainCanvas);
+    </script>
+  </body>
+</html>
